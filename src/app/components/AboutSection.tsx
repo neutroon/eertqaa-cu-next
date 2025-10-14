@@ -13,12 +13,12 @@ export default function AboutSection() {
     {
       number: "2",
       title: "بدء البرنامج",
-      description: "برامج أونلاين عبر زوم أو حضورياً في جامعة عين شمس",
+      description: "برامج أونلاين عبر زوم أو حضورياً في جامعة القاهرة",
     },
     {
       number: "3",
       title: "الحصول على الشهادة",
-      description: "شهادة مختومة بختم النسر من جامعة عين شمس",
+      description: "شهادة مختومة بختم النسر من جامعة القاهرة",
     },
   ];
 
@@ -94,7 +94,7 @@ export default function AboutSection() {
                 </div>
                 <div>
                   <h3 className="text-3xl font-bold bg-gradient-to-r from-indigo-900 to-purple-900 bg-clip-text text-transparent arabic-heading">
-                    جامعة عين شمس
+                    جامعة القاهرة
                   </h3>
                   <div className="flex items-center text-green-600 mt-1">
                     <div className="w-2 h-2 bg-green-500 rounded-full me-2 animate-pulse"></div>
@@ -103,9 +103,9 @@ export default function AboutSection() {
                 </div>
               </div>
               <p className="text-gray-700 mb-6 arabic-text leading-relaxed text-lg">
-                إحدى أعرق الجامعات المصرية، تأسست عام 1950 وتضم 15 كلية ومركزاً
-                علمياً متخصصاً. تتميز بسمعتها الأكاديمية المتميزة وشهاداتها
-                المعترف بها محلياً وإقليمياً.
+                إحدى أعرق الجامعات المصرية، تأسست عام 1908 وتضم عدداً كبيراً من
+                الكليات والمراكز العلمية المتخصصة. تتميز بسمعتها الأكاديمية
+                المتميزة وشهاداتها المعترف بها محلياً وإقليمياً.
               </p>
               <div className="space-y-4">
                 <div className="flex items-center text-indigo-600">

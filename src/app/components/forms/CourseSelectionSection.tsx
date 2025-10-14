@@ -52,11 +52,14 @@ export default function CourseSelectionSection({
             }`}
           >
             <option value="">اختر البرنامج التدريبي</option>
-            {courses.data.courses.map((course: Course) => (
-              <option key={course.id} value={course.title}>
-                {course.title} - {course.category.name}
-              </option>
-            ))}
+            {courses.data.courses.map(
+              (course: Course) =>
+                course.availableSeats > 0 && (
+                  <option key={course.id} value={course.title}>
+                    {course.title} - {course.category.name}
+                  </option>
+                )
+            )}
           </select>
           <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
             {formErrors.course ? (

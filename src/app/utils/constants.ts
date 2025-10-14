@@ -14,7 +14,7 @@ export const CLOUDINARY_CONFIG = {
   CLOUD_NAME: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
   UPLOAD_PRESET: "voice_messages",
   RESOURCE_TYPE: "video",
-  FOLDER: "eertqaa/voice-messages",
+  FOLDER: "رواء/voice-messages",
 } as const;
 
 // Voice Recording Configuration

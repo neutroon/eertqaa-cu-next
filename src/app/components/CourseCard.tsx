@@ -89,7 +89,7 @@ export default function CourseCard({
             <span className="font-semibold">مكتمل العدد</span>
           </div>
         )}
-        <div className="text-sm text-gray-500">
+        {/* <div className="text-sm text-gray-500">
           {course.duration == 1
             ? "شهر"
             : course.duration == 2
@@ -97,14 +97,14 @@ export default function CourseCard({
             : course.duration > 2 && course.duration < 11
             ? `${course.duration} شهور`
             : `${course.duration >= 10 ? "أشهر" : "شهر"} `}
-        </div>
+        </div> */}
       </div>
 
       {/* static  */}
       {/* description */}
       <p className="text-gray-600 mb-4 leading-relaxed arabic-text">
         {course.description ||
-          "برنامج تدريبي متخصص مع شهادة معتمدة من جامعة عين شمس"}
+          "برنامج تدريبي متخصص مع شهادة معتمدة من جامعة القاهرة"}
       </p>
 
       {/* Content Summary */}
@@ -174,7 +174,7 @@ export default function CourseCard({
                 {(!course.features ||
                   !Array.isArray(course.features) ||
                   course.features.length === 0) &&
-                  " شهادة معتمدة من جامعة عين شمس"}
+                  " شهادة معتمدة من جامعة القاهرة"}
               </div>
             </div>
           ))}

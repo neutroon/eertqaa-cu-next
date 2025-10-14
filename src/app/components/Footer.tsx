@@ -21,28 +21,21 @@ export default function Footer() {
         <div className="grid md:grid-cols-3 gap-12">
           <div className="animate-fade-in-up">
             <div className="flex items-center group">
-              <div className="w-12 h-10 rounded-xl flex items-center justify-center -mb-2 -me-2.5 group-hover:scale-110 transition-transform">
-                {/* <svg
-                  className="w-6 h-6 text-white"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                </svg> */}
+              {/* <div className="w-12 h-10 rounded-xl flex items-center justify-center -mb-2 -me-2.5 group-hover:scale-110 transition-transform">
                 <Image
                   src="/logo.svg"
-                  alt="eertqaa"
+                  alt="رواء"
                   width={100}
                   height={100}
                   className="w-full h-full object-cover "
                 />
-              </div>
+              </div> */}
               <h3 className="text-3xl font-bold bg-gradient-to-r from-indigo-900 to-purple-900 bg-clip-text text-transparent arabic-heading">
-                eertqaa
+                رواء
               </h3>
             </div>
             <p className="text-gray-300 mb-6 arabic-text leading-relaxed text-lg">
-              برامج تدريبية معتمدة من جامعة عين شمس مع شهادات قابلة للتوثيق من
+              برامج تدريبية معتمدة من جامعة القاهرة مع شهادات قابلة للتوثيق من
               وزارة الخارجية
             </p>
             <div className="flex space-x-4">
@@ -141,7 +134,7 @@ export default function Footer() {
                 <div>
                   <p className="text-sm text-gray-400">البريد الإلكتروني</p>
                   <a href="mailto:info@eertqaa.com" className="font-semibold">
-                    info@eertqaa.com
+                    info@رواء.com
                   </a>
                 </div>
               </div> */}
@@ -185,7 +178,7 @@ export default function Footer() {
                 <div>
                   <p className="text-sm text-gray-400">العنوان</p>
                   <p className="font-semibold arabic-text">
-                    جامعة عين شمس، القاهرة
+                    جامعة القاهرة، القاهرة
                   </p>
                 </div>
               </div>
@@ -198,7 +191,7 @@ export default function Footer() {
           style={{ animationDelay: "0.6s" }}
         >
           <p className="text-gray-300 arabic-text text-center text-lg">
-            &copy; 2025 eertqaa جميع الحقوق محفوظة.
+            &copy; 2025 رواء جميع الحقوق محفوظة.
             {/* تم التطوير بـ ❤️ لخدمة
             التعليم المتميز. */}
           </p>

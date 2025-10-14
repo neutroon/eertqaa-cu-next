@@ -54,23 +54,16 @@ export default function LoadingScreen({
         {/* Logo */}
         <div className="flex items-center justify-center mb-8 text-center">
           <div className="w-15 h-13 rounded-xl flex items-center justify-center -mb-2 -me-2.5 group-hover:scale-110 transition-transform">
-            {/* <svg
-                  className="w-6 h-6 text-white"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                </svg> */}
-            <Image
+            {/* <Image
               src="/logo.svg"
-              alt="eertqaa"
+              alt="رواء"
               width={100}
               height={100}
               className="w-full h-full object-cover "
-            />
+            /> */}
           </div>
           <h1 className="text-5xl font-bold bg-gradient-to-r from-white to-indigo-200 bg-clip-text text-transparent arabic-heading">
-            eertqaa
+            رواء
           </h1>
         </div>
 
@@ -80,7 +73,7 @@ export default function LoadingScreen({
             جاري تحميل المحتوى
           </h2>
           <p className="text-indigo-200 arabic-text text-center">
-            برامج تدريبية معتمدة من جامعة عين شمس
+            برامج تدريبية معتمدة من جامعة القاهرة
           </p>
         </div>
 

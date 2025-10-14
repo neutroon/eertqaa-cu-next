@@ -17,7 +17,7 @@ export default function FeaturesSection() {
         </svg>
       ),
       title: "شهادة معتمدة",
-      description: "الشهادات والتدريب والمحتوى معتمدين من جامعة عين شمس",
+      description: "الشهادات والتدريب والمحتوى معتمدين من جامعة القاهرة",
     },
     {
       icon: (
@@ -92,11 +92,11 @@ export default function FeaturesSection() {
               لماذا تختار برامج
               <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 bg-clip-text text-transparent">
                 {" "}
-                eertqaa
+                رواء
               </span>
             </span>
 
-            <span className="text-gray-900 block mb-2">من جامعة عين شمس؟</span>
+            <span className="text-gray-900 block mb-2">من جامعة القاهرة؟</span>
           </h2>
           <p
             className="text-xl text-center md:text-2xl text-gray-700 max-w-4xl mx-auto arabic-text leading-relaxed font-medium animate-fade-in-up"

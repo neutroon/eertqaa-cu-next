@@ -82,7 +82,7 @@ export default function Hero() {
                 poster="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyMCIgaGVpZ2h0PSIxMDgwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjNGY0NmU1Ii8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjN2M3M2U5Ii8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNnKSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LXNpemU9IjQ4IiBmb250LWZhbWlseT0iQXJpYWwiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+2KzYp9mF2LnYqSDYudmK2YYg2LTZhdizPC90ZXh0Pjwvc3ZnPg=="
               >
                 <source
-                  src="https://www.asu.edu.eg/videos/finalVed.mp4"
+                  src="https://res.cloudinary.com/duncei4g4/video/upload/v1760407332/Rawaa_ouv0d8.mov"
                   type="video/mp4"
                 />
                 عذراً، متصفحك لا يدعم تشغيل الفيديو.
@@ -121,7 +121,7 @@ export default function Hero() {
                   onError={handleVideoError}
                 >
                   <source
-                    src="https://gorswhbdzcoealrnwjeh.supabase.co/storage/v1/object/sign/videos/Eertqaa1.mp4?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80OGE2Zjg3Yi1kYTU1LTQxNmItOWRmMC0yYzZhYmRlNDk1ZDUiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJ2aWRlb3MvRWVydHFhYTEubXA0IiwiaWF0IjoxNzU5Njg4NzM0LCJleHAiOjE3OTEyMjQ3MzR9.CwDsZk4BylMJ9xBX-5FGhpQDr9Tk7iGZ-B0hRPvpT5g"
+                    src="https://res.cloudinary.com/duncei4g4/video/upload/v1760407332/Rawaa_ouv0d8.mov"
                     type="video/mp4"
                   />
                   عذراً، متصفحك لا يدعم تشغيل الفيديو.
@@ -160,7 +160,7 @@ export default function Hero() {
                       </h1>
                       <p className="text-center text-gray-200 arabic-text text-xl md:text-2xl mb-8 leading-relaxed">
                         انضم إلى أكثر من 30 برنامج تدريبي متخصص واحصل على شهادة
-                        مختومة بختم النسر من جامعة عين شمس
+                        مختومة بختم النسر من جامعة القاهرة
                       </p>
 
                       {/* Action Buttons */}

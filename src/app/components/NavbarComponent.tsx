@@ -8,18 +8,18 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-center items-center flex-wrap md:flex-nowrap gap-6">
             <div className="flex items-center space-x-4 backdrop-blur-sm sm:border-2 border-white rounded-2xl px-2">
-              <div className="w-16 h-16 bg-opacity-20 backdrop-blur-sm sm:border-e-2 border-white flex items-center justify-center">
+              <div className="bg-opacity-20 backdrop-blur-sm sm:border-e-2 border-white flex items-center justify-center">
                 <Image
-                  src="https://www.asu.edu.eg/frontend/images/logo.png"
-                  alt="جامعة عين شمس"
+                  src="/cu-logo.png"
+                  alt="جامعة القاهرة"
                   width={64}
                   height={64}
                   className="w-full h-full object-cover"
                 />
               </div>
               <div className="text-gray-700 hidden lg:block">
-                <div className="text-xl font-bold">برامج جامعة عين شمس</div>
-                <div className="text-sm opacity-80">بالتعاون مع ارتقاء</div>
+                <div className="text-xl font-bold">برامج جامعة القاهرة</div>
+                <div className="text-sm opacity-80">بالتعاون مع رواء</div>
               </div>
             </div>
 
@@ -54,18 +54,18 @@ export default function Navbar() {
                 <span className="relative z-10">التسجيل</span>
               </a>
             </nav>
-            <div className="rounded-xl flex items-center order-2 md:order-3 justify-center group-hover:scale-110 transition-transform">
+            {/* <div className="rounded-xl flex items-center order-2 md:order-3 justify-center group-hover:scale-110 transition-transform">
               <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-900 to-purple-900 bg-clip-text text-transparent arabic-heading">
-                eertqaa
+                رواء
               </h1>
               <Image
                 src="/logo.svg"
-                alt="eertqaa"
+                alt="رواء"
                 width={100}
                 height={100}
                 className=" object-cover -ms-2.5 w-12 h-10"
               />
-            </div>
+            </div> */}
           </div>
         </div>
       </header>

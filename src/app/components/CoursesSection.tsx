@@ -91,11 +91,11 @@ export default function CoursesSection({
             style={{ animationDelay: "0.4s" }}
           >
             أكثر من 30 برنامج تدريبي متخصص في مختلف المجالات مع شهادات معتمدة من
-            جامعة عين شمس وقابلة للتوثيق من وزارة الخارجيه
+            جامعة القاهرة وقابلة للتوثيق من وزارة الخارجيه
           </p>
 
           {/* Course Count */}
-          <div className="text-center mb-6">
+          {/* <div className="text-center mb-6">
             <p className="text-lg text-gray-600 arabic-text">
               عرض {filteredCourses.length} من أصل {courses.data.courses.length}{" "}
               برامج تدريبية
@@ -106,10 +106,10 @@ export default function CoursesSection({
                   )?.name
                 }`}
             </p>
-          </div>
+          </div> */}
 
           {/* Category Filter */}
-          <div className="flex flex-wrap justify-center gap-3 mb-12">
+          {/* <div className="flex flex-wrap justify-center gap-3 mb-12">
             <button
               onClick={() => handleCategoryFilter("الكل")}
               className={`px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 border shadow-sm hover:shadow-md transform hover:-translate-y-0.5 ${
@@ -145,7 +145,7 @@ export default function CoursesSection({
                 </button>
               );
             })}
-          </div>
+          </div> */}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
@@ -181,21 +181,25 @@ export default function CoursesSection({
               </button>
             </div>
           ) : (
-            (showAllCourses
-              ? filteredCourses
+            (true
+              ? // showAllCourses
+                filteredCourses
               : filteredCourses.slice(0, 9)
-            ).map((course: Course, index: number) => (
-              <CourseCard
-                key={course.id}
-                course={course}
-                index={index}
-                selectedCourse={selectedCourse}
-                onCourseSelect={onCourseSelect}
-              />
-            ))
+            ).map(
+              (course: Course, index: number) =>
+                course.availableSeats > 0 && (
+                  <CourseCard
+                    key={course.id}
+                    course={course}
+                    index={index}
+                    selectedCourse={selectedCourse}
+                    onCourseSelect={onCourseSelect}
+                  />
+                )
+            )
           )}
         </div>
-
+        {/* 
         <div className="text-center">
           {filteredCourses.length > 9 && (
             <button
@@ -216,7 +220,7 @@ export default function CoursesSection({
                 : `عرض جميع البرامج (${filteredCourses.length} برنامج)`}
             </button>
           )}
-        </div>
+        </div> */}
       </div>
     </section>
   );
