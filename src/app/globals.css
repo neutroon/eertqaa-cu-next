@@ -1,0 +1,396 @@
+@import "tailwindcss";
+
+@theme {
+  /* Color system */
+  --color-background: #ffffff;
+  --color-foreground: #171717;
+
+  /* Font system */
+  --font-sans: var(--font-cairo);
+  --font-serif: var(--font-amiri);
+  --font-mono: var(--font-noto-sans-arabic);
+
+  /* Custom font families */
+  --font-family-cairo: var(--font-cairo), "Cairo", "Noto Sans Arabic", Arial,
+    sans-serif;
+  --font-family-amiri: var(--font-amiri), "Amiri", "Noto Sans Arabic", serif;
+  --font-family-noto-arabic: var(--font-noto-sans-arabic), "Noto Sans Arabic",
+    Arial, sans-serif;
+
+  /* Custom animations */
+  --animate-fade-in: fadeIn 0.5s ease-in-out;
+  --animate-fade-in-up: fadeInUp 0.6s ease-out;
+  --animate-slide-in-right: slideInRight 0.5s ease-out;
+  --animate-bounce-slow: bounce 2s infinite;
+
+  /* Dark mode colors */
+  --color-background-dark: #0a0a0a;
+  --color-foreground-dark: #ededed;
+}
+
+@theme dark {
+  --color-background: var(--color-background-dark);
+  --color-foreground: var(--color-foreground-dark);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-family-cairo);
+    font-feature-settings: "liga" 1, "kern" 1;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-family-cairo);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Enhanced focus styles for Arabic forms */
+  input:focus,
+  textarea:focus,
+  select:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    border-color: #6366f1;
+  }
+  input,
+  select {
+    padding-right: 32px !important;
+    padding-left: 32px !important;
+  }
+
+  button {
+    cursor: pointer;
+  }
+}
+
+@layer components {
+  .font-display {
+    font-family: var(--font-family-amiri);
+    font-weight: 400;
+    line-height: 1.6;
+    font-feature-settings: "liga" 1, "kern" 1, "calt" 1;
+  }
+
+  .font-body {
+    font-family: var(--font-family-cairo);
+    font-weight: 400;
+    line-height: 1.7;
+    font-feature-settings: "liga" 1, "kern" 1;
+  }
+
+  /* Enhanced Professional Styling */
+  .glass-effect {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .gradient-border {
+    background: linear-gradient(white, white) padding-box,
+      linear-gradient(135deg, #667eea 0%, #764ba2 100%) border-box;
+    border: 2px solid transparent;
+  }
+
+  .professional-shadow {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  }
+
+  .elevated-shadow {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+      0 10px 10px -5px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  }
+
+  .premium-gradient {
+    background: linear-gradient(
+      135deg,
+      #667eea 0%,
+      #764ba2 25%,
+      #f093fb 50%,
+      #f5576c 75%,
+      #4facfe 100%
+    );
+  }
+
+  .professional-card {
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+  }
+
+  .professional-card:hover {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+      0 10px 10px -5px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  }
+
+  .premium-button {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    transform: scale(1);
+  }
+
+  .premium-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  }
+
+  .premium-button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    transition: left 0.5s;
+  }
+
+  .premium-button:hover::before {
+    left: 100%;
+  }
+
+  .arabic-text {
+    font-family: var(--font-family-cairo);
+    direction: rtl;
+    text-align: right;
+    line-height: 1.8;
+    font-feature-settings: "liga" 1, "kern" 1, "calt" 1;
+  }
+
+  .arabic-heading {
+    font-family: var(--font-family-amiri);
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    font-feature-settings: "liga" 1, "kern" 1, "calt" 1;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  .arabic-quote {
+    font-family: var(--font-family-amiri);
+    font-style: italic;
+    line-height: 1.8;
+    font-feature-settings: "liga" 1, "kern" 1, "calt" 1;
+  }
+
+  .arabic-calligraphy {
+    font-family: var(--font-family-amiri);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    font-feature-settings: "liga" 1, "kern" 1, "calt" 1, "swsh" 1;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .arabic-form input,
+  .arabic-form textarea,
+  .arabic-form select {
+    font-family: var(--font-family-cairo);
+    direction: rtl;
+    text-align: right;
+    font-feature-settings: "liga" 1, "kern" 1;
+  }
+
+  .arabic-button {
+    font-family: var(--font-family-cairo);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    font-feature-settings: "liga" 1, "kern" 1;
+  }
+
+  /* Custom scrollbar for Arabic content */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f5f9;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+
+  /* Additional Arabic typography enhancements */
+  .arabic-text p {
+    margin-bottom: 1rem;
+    text-align: justify;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+  }
+}
+
+@layer utilities {
+  .animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+    will-change: transform, opacity;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+    will-change: opacity;
+  }
+
+  .animate-slide-in-right {
+    animation: slideInRight 0.5s ease-out;
+    will-change: transform, opacity;
+  }
+
+  .animate-bounce-slow {
+    animation: bounce 2s infinite;
+    will-change: transform;
+  }
+
+  /* Performance optimizations */
+  .gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+
+  .reduce-motion {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .professional-shadow {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  }
+
+  .elevated-shadow {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+      0 10px 10px -5px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  }
+
+  .glass-effect {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  /* RTL specific styles */
+  [dir="rtl"] {
+    text-align: right;
+  }
+
+  /* [dir="rtl"] .space-x-reverse > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-x-reverse: 1;
+  } */
+
+  /* Font family utilities */
+  .font-cairo {
+    font-family: var(--font-family-cairo);
+  }
+
+  .font-amiri {
+    font-family: var(--font-family-amiri);
+  }
+
+  .font-noto-arabic {
+    font-family: var(--font-family-noto-arabic);
+  }
+
+  /* Mobile performance optimizations */
+  @media (max-width: 768px) {
+    .reduce-animations * {
+      animation-duration: 0.3s !important;
+      transition-duration: 0.3s !important;
+    }
+
+    .mobile-optimized {
+      transform: none !important;
+      filter: none !important;
+      backdrop-filter: none !important;
+    }
+
+    .mobile-text {
+      font-size: clamp(1rem, 4vw, 1.5rem);
+    }
+
+    .mobile-heading {
+      font-size: clamp(1.5rem, 6vw, 2.5rem);
+    }
+  }
+
+  /* Reduce motion for accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    .glass-effect {
+      background: rgba(255, 255, 255, 1);
+      backdrop-filter: none;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
