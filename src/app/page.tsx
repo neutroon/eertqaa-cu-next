@@ -12,7 +12,6 @@ import Footer from "./components/Footer";
 import LoadingScreen from "./components/LoadingScreen";
 import LazySection from "./components/LazySection";
 import { useAdaptiveLoading } from "./hooks/usePerformance";
-// import courses from "./constants/courses";
 import { Courses } from "./types";
 import { getCourses } from "./services/api";
 import RegistrationFormRefactored from "./components/RegistrationFormRefactored";

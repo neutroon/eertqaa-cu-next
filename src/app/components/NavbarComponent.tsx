@@ -18,8 +18,11 @@ export default function Navbar() {
                 />
               </div>
               <div className="text-gray-700 hidden lg:block">
-                <div className="text-xl font-bold">برامج جامعة القاهرة</div>
-                <div className="text-sm opacity-80">بالتعاون مع رواء</div>
+                <div className="text-xl font-bold">جامعة القاهرة</div>
+                <div className="text-sm opacity-80">
+                  {" "}
+                  برامج التغذيه من جامعة القاهرة
+                </div>
               </div>
             </div>
 
