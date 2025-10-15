@@ -52,20 +52,20 @@ export default function LoadingScreen({
 
       <div className="relative text-center text-white z-10">
         {/* Logo */}
-        <div className="flex items-center justify-center mb-8 text-center">
+        {/* <div className="flex items-center justify-center mb-8 text-center">
           <div className="w-15 h-13 rounded-xl flex items-center justify-center -mb-2 -me-2.5 group-hover:scale-110 transition-transform">
-            {/* <Image
+            <Image
               src="/logo.svg"
               alt="رواء"
               width={100}
               height={100}
               className="w-full h-full object-cover "
-            /> */}
+            />
           </div>
           <h1 className="text-5xl font-bold bg-gradient-to-r from-white to-indigo-200 bg-clip-text text-transparent arabic-heading">
             رواء
           </h1>
-        </div>
+        </div> */}
 
         {/* Loading Text */}
         <div className="mb-8">

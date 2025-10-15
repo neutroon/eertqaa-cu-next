@@ -92,7 +92,7 @@ export default function FeaturesSection() {
               لماذا تختار برامج
               <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 bg-clip-text text-transparent">
                 {" "}
-                رواء
+                التغذيه
               </span>
             </span>
 
