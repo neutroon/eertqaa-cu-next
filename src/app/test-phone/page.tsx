@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // STRICT Egyptian phone number validation
 import { parsePhoneNumber, isValidPhoneNumber } from "react-phone-number-input";
 

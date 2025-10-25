@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { isValidPhoneNumber } from "react-phone-number-input";
 
 // Test data

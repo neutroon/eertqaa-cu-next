@@ -1,5 +1,5 @@
 "use client";
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect } from "react";
 import { runAllTests } from "../utils/phoneValidationTests";
 
