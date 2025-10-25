@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Cairo, Amiri, Noto_Sans_Arabic } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
+import MetaPixel from "@/app/components/MetaPixel";
 
 const cairo = Cairo({
   variable: "--font-cairo",
@@ -72,6 +73,8 @@ export default function RootLayout({
       <body
         className={`${cairo.variable} ${amiri.variable} ${notoSansArabic.variable} font-cairo antialiased`}
       >
+        <MetaPixel pixelId={pixelId} />
+
         {children}
       </body>
     </html>

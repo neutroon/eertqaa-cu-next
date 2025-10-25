@@ -112,7 +112,7 @@ export default function Home() {
             selectedCourse={selectedCourse}
             setSelectedCourse={setSelectedCourse}
           />
-          <TestimonialsSection courses={courses.data.courses} />
+          <TestimonialsSection courses={courses?.data?.courses} />
         </>
       )}
       <Footer />
