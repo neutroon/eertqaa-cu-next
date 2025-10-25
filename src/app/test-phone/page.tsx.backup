@@ -3,6 +3,13 @@
 // STRICT Egyptian phone number validation
 import { parsePhoneNumber, isValidPhoneNumber } from "react-phone-number-input";
 
+// React Hook Form validation component
+import React from "react";
+import { useFormContext, Controller } from "react-hook-form";
+import PhoneInput from "react-phone-number-input";
+import ar from "react-phone-number-input/locale/ar.json";
+import "react-phone-number-input/style.css";
+
 /**
  * STRICT validation for Egyptian phone numbers
  * Does NOT rely solely on libphonenumber-js due to metadata issues
@@ -208,12 +215,58 @@ export const getEgyptianOperator = (phone: string): string | null => {
   }
 };
 
-// React Hook Form validation component
-import React from "react";
-import { useFormContext, Controller } from "react-hook-form";
-import PhoneInput from "react-phone-number-input";
-import ar from "react-phone-number-input/locale/ar.json";
-import "react-phone-number-input/style.css";
+export const testStrictValidation = () => {
+  const testCases = [
+    // Valid mobile numbers
+    { phone: "+201012345678", expected: true, desc: "Vodafone 11 digits" },
+    { phone: "+201112345678", expected: true, desc: "Etisalat 11 digits" },
+    { phone: "+201212345678", expected: true, desc: "Orange 11 digits" },
+    { phone: "+201512345678", expected: true, desc: "WE 11 digits" },
+
+    // Invalid mobile numbers
+    { phone: "+20 12 028400", expected: false, desc: "TOO SHORT - 8 digits" },
+    { phone: "+2010123456", expected: false, desc: "TOO SHORT - 9 digits" },
+    { phone: "+201012345", expected: false, desc: "TOO SHORT - 10 digits" },
+    { phone: "+20101234567890", expected: false, desc: "TOO LONG - 13 digits" },
+    { phone: "+201312345678", expected: false, desc: "Invalid prefix 013" },
+    { phone: "+201412345678", expected: false, desc: "Invalid prefix 014" },
+
+    // Valid landlines
+    { phone: "+20223456789", expected: true, desc: "Cairo landline 10 digits" },
+    { phone: "+2023456789", expected: true, desc: "Cairo landline alt format" },
+    {
+      phone: "+20312345678",
+      expected: true,
+      desc: "Alexandria landline 9 digits",
+    },
+    {
+      phone: "+20482345678",
+      expected: true,
+      desc: "Other city landline 9 digits",
+    },
+
+    // Invalid landlines
+    { phone: "+202234567", expected: false, desc: "Cairo too short" },
+    { phone: "+2031234567890", expected: false, desc: "Alexandria too long" },
+  ];
+
+  console.log("\n=== STRICT Egyptian Phone Validation Tests ===\n");
+
+  testCases.forEach(({ phone, expected, desc }) => {
+    const result = isValidEgyptianPhone(phone);
+    const info = getEgyptianPhoneInfo(phone);
+    const status = result === expected ? "✅ PASS" : "❌ FAIL";
+
+    console.log(`${status} | ${desc}`);
+    console.log(`  Input: ${phone}`);
+    console.log(`  Expected: ${expected}, Got: ${result}`);
+    console.log(`  Length: ${info.length}, Type: ${info.type}`);
+    console.log(
+      `  Lib says valid: ${info.isValid}, Strict says: ${info.isValidStrict}`
+    );
+    console.log("");
+  });
+};
 
 export default function StrictEgyptianPhoneInput() {
   const {
@@ -351,58 +404,6 @@ export default function StrictEgyptianPhoneInput() {
 }
 
 // Test cases - Run these to verify
-export const testStrictValidation = () => {
-  const testCases = [
-    // Valid mobile numbers
-    { phone: "+201012345678", expected: true, desc: "Vodafone 11 digits" },
-    { phone: "+201112345678", expected: true, desc: "Etisalat 11 digits" },
-    { phone: "+201212345678", expected: true, desc: "Orange 11 digits" },
-    { phone: "+201512345678", expected: true, desc: "WE 11 digits" },
-
-    // Invalid mobile numbers
-    { phone: "+20 12 028400", expected: false, desc: "TOO SHORT - 8 digits" },
-    { phone: "+2010123456", expected: false, desc: "TOO SHORT - 9 digits" },
-    { phone: "+201012345", expected: false, desc: "TOO SHORT - 10 digits" },
-    { phone: "+20101234567890", expected: false, desc: "TOO LONG - 13 digits" },
-    { phone: "+201312345678", expected: false, desc: "Invalid prefix 013" },
-    { phone: "+201412345678", expected: false, desc: "Invalid prefix 014" },
-
-    // Valid landlines
-    { phone: "+20223456789", expected: true, desc: "Cairo landline 10 digits" },
-    { phone: "+2023456789", expected: true, desc: "Cairo landline alt format" },
-    {
-      phone: "+20312345678",
-      expected: true,
-      desc: "Alexandria landline 9 digits",
-    },
-    {
-      phone: "+20482345678",
-      expected: true,
-      desc: "Other city landline 9 digits",
-    },
-
-    // Invalid landlines
-    { phone: "+202234567", expected: false, desc: "Cairo too short" },
-    { phone: "+2031234567890", expected: false, desc: "Alexandria too long" },
-  ];
-
-  console.log("\n=== STRICT Egyptian Phone Validation Tests ===\n");
-
-  testCases.forEach(({ phone, expected, desc }) => {
-    const result = isValidEgyptianPhone(phone);
-    const info = getEgyptianPhoneInfo(phone);
-    const status = result === expected ? "✅ PASS" : "❌ FAIL";
-
-    console.log(`${status} | ${desc}`);
-    console.log(`  Input: ${phone}`);
-    console.log(`  Expected: ${expected}, Got: ${result}`);
-    console.log(`  Length: ${info.length}, Type: ${info.type}`);
-    console.log(
-      `  Lib says valid: ${info.isValid}, Strict says: ${info.isValidStrict}`
-    );
-    console.log("");
-  });
-};
 
 // Backend validation middleware
 // import { Request, Response, NextFunction } from "express";
