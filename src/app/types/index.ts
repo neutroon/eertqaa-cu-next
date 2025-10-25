@@ -1,4 +1,11 @@
 // Course interface
+export type IFormValues = {
+  firstName: string;
+  phone: string;
+  course: string;
+  preferredMethod: string;
+  message: string;
+};
 export interface Course {
   id: string;
   title: string;

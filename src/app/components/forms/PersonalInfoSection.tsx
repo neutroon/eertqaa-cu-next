@@ -1,14 +1,28 @@
 import React from "react";
-import { FormErrors } from "../../types";
+import { FormErrors, IFormValues } from "../../types";
+import { UseFormRegister, Control, Controller } from "react-hook-form";
+import PhoneInput, {
+  isPossiblePhoneNumber,
+  isValidPhoneNumber,
+  parsePhoneNumber,
+} from "react-phone-number-input";
+import ar from "react-phone-number-input/locale/ar.json";
+import "react-phone-number-input/style.css";
+// import { isValidEgyptianPhone } from "@/app/test-phone/page";
+import { isValidPhone } from "@ztechy/validations";
 
 interface MainInfoSectionProps {
   formErrors: FormErrors;
   clearFieldError: (fieldName: string) => void;
+  register: UseFormRegister<IFormValues>;
+  control: Control<IFormValues>;
 }
 
 export default function MainInfoSection({
+  register,
   formErrors,
   clearFieldError,
+  control,
 }: MainInfoSectionProps) {
   return (
     <>
@@ -39,9 +53,15 @@ export default function MainInfoSection({
               <input
                 type="text"
                 id="firstName"
-                name="firstName"
+                {...register("firstName", {
+                  required: "الاسم مطلوب",
+                  minLength: {
+                    value: 2,
+                    message: "الاسم يجب أن يكون أكثر من حرفين",
+                  },
+                  onChange: () => clearFieldError("firstName"),
+                })}
                 required
-                onInput={() => clearFieldError("firstName")}
                 className={`w-full px-4 py-4 border-2 rounded-xl focus:ring-2 transition-all duration-300 bg-white ${
                   formErrors.firstName
                     ? "border-red-500 focus:ring-red-500 focus:border-red-500"
@@ -96,19 +116,6 @@ export default function MainInfoSection({
               </p>
             )}
           </div>
-          {/* </div> */}
-          {/* <div className="bg-gray-100 rounded-2xl p-6"> */}
-          {/* <h3 className="text-lg font-semibold text-gray-900 mb-6 flex items-center">
-          <svg
-            className="w-5 h-5 text-indigo-600 ml-2"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-          </svg>
-          معلومات التواصل
-        </h3> */}
           <div className="group w-full">
             <label
               htmlFor="phone"
@@ -117,18 +124,86 @@ export default function MainInfoSection({
               رقم الهاتف *
             </label>
             <div className="relative">
-              <input
-                type="tel"
-                id="phone"
+              <Controller
                 name="phone"
-                required
-                onInput={() => clearFieldError("phone")}
-                className={`w-full px-4 py-4 border-2 rounded-xl focus:ring-2 transition-all duration-300 bg-white ${
-                  formErrors.phone
-                    ? "border-red-500 focus:ring-red-500 focus:border-red-500"
-                    : "border-gray-200 focus:ring-indigo-500 focus:border-indigo-500 hover:border-gray-300"
-                }`}
-                placeholder="+20 123 456 7890"
+                control={control}
+                rules={{
+                  required: "رقم الهاتف مطلوب",
+                  validate: (value) => {
+                    if (!value) return "رقم الهاتف مطلوب";
+
+                    // Use STRICT validation
+                    const isValid = isValidPhone(value);
+
+                    if (!isValid) {
+                      try {
+                        const phoneNumber = parsePhoneNumber(value);
+                        const national = phoneNumber?.nationalNumber || "";
+
+                        // Provide specific error messages
+                        if (phoneNumber?.country === "EG") {
+                          if (national.startsWith("01")) {
+                            if (national.length < 11) {
+                              return "رقم الموبايل قصير جداً. يجب أن يكون 11 رقماً";
+                            }
+                            if (national.length > 11) {
+                              return "رقم الموبايل طويل جداً. يجب أن يكون 11 رقماً فقط";
+                            }
+                            if (!/^01[0125]/.test(national)) {
+                              return "رقم الموبايل يجب أن يبدأ بـ 010 أو 011 أو 012 أو 015";
+                            }
+                          }
+
+                          if (
+                            national.startsWith("02") &&
+                            national.length !== 10
+                          ) {
+                            return "رقم القاهرة يجب أن يكون 10 أرقام";
+                          }
+
+                          if (
+                            national.startsWith("03") &&
+                            national.length !== 9
+                          ) {
+                            return "رقم الإسكندرية يجب أن يكون 9 أرقام";
+                          }
+                        }
+
+                        return "رقم الهاتف غير صحيح";
+                      } catch {
+                        return "رقم الهاتف غير صحيح";
+                      }
+                    }
+
+                    return true;
+                  },
+                }}
+                render={({ field: { onChange, value, name } }) => (
+                  <PhoneInput
+                    international
+                    defaultCountry="EG"
+                    value={value}
+                    onChange={(phoneValue) => {
+                      onChange(phoneValue);
+                      clearFieldError("phone");
+                    }}
+                    labels={ar}
+                    className={`phone-input ${
+                      formErrors.phone ? "phone-error" : ""
+                    }`}
+                    placeholder="+20 123 456 7890"
+                    // inputComponent={({ className, ...props }) => (
+                    //   <input
+                    //     {...props}
+                    //     className={`w-full px-4 py-4 border-2 rounded-xl focus:ring-2 transition-all duration-300 bg-white ${
+                    //       formErrors.phone
+                    //         ? "border-red-500 focus:ring-red-500 focus:border-red-500"
+                    //         : "border-gray-200 focus:ring-indigo-500 focus:border-indigo-500 hover:border-gray-300"
+                    //     } ${className || ""}`}
+                    //   />
+                    // )}
+                  />
+                )}
               />
               <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                 {formErrors.phone ? (

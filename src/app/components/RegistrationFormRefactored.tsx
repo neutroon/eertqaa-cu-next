@@ -1,7 +1,8 @@
 import { useEffect } from "react";
-import { RegistrationFormProps } from "../types";
+import { IFormValues, RegistrationFormProps } from "../types";
 import { useVoiceRecording } from "../hooks/useVoiceRecording";
 import { useFormSubmission } from "../hooks/useFormSubmission";
+import { useForm, SubmitHandler } from "react-hook-form";
 
 // Form sections
 import MainInfoSection from "./forms/PersonalInfoSection";
@@ -27,7 +28,21 @@ export default function RegistrationFormRefactored({
     cleanup,
   } = useVoiceRecording();
 
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+    reset,
+  } = useForm<IFormValues>();
   const { formState, clearFieldError, handleFormSubmit } = useFormSubmission();
+
+  const onSubmit = (data: IFormValues) => {
+    handleFormSubmit(data, voiceState.audioBlob, setSelectedCourse, () => {
+      onFormSuccess();
+      reset(); // Reset React Hook Form
+    });
+  };
 
   // Cleanup effect
   useEffect(() => {
@@ -39,7 +54,6 @@ export default function RegistrationFormRefactored({
   const onFormSuccess = () => {
     deleteRecording();
   };
-
   return (
     <section
       id="register"
@@ -147,32 +161,57 @@ export default function RegistrationFormRefactored({
           <form
             className="space-y-8"
             noValidate
-            onSubmit={(e) =>
-              handleFormSubmit(
-                e,
-                voiceState.audioBlob,
-                setSelectedCourse,
-                onFormSuccess
-              )
-            }
+            onSubmit={handleSubmit(onSubmit)}
           >
             {/* Form Sections */}
             <MainInfoSection
-              formErrors={formState.formErrors}
+              register={register}
+              control={control}
+              formErrors={{
+                ...formState.formErrors,
+                ...(errors.firstName?.message && {
+                  firstName: errors.firstName.message,
+                }),
+                ...(errors.phone?.message && { phone: errors.phone.message }),
+              }}
               clearFieldError={clearFieldError}
             />
 
             <CourseSelectionSection
+              register={register}
               courses={courses}
               selectedCourse={selectedCourse}
               setSelectedCourse={setSelectedCourse}
-              formErrors={formState.formErrors}
+              formErrors={{
+                ...formState.formErrors,
+                ...(errors.course?.message && {
+                  course: errors.course.message,
+                }),
+              }}
               clearFieldError={clearFieldError}
             />
 
-            <LearningPreferencesSection />
+            <LearningPreferencesSection
+              register={register}
+              formErrors={{
+                ...formState.formErrors,
+                ...(errors.preferredMethod?.message && {
+                  preferredMethod: errors.preferredMethod.message,
+                }),
+              }}
+              clearFieldError={clearFieldError}
+            />
 
-            <AdditionalMessageSection />
+            <AdditionalMessageSection
+              register={register}
+              formErrors={{
+                ...formState.formErrors,
+                ...(errors.message?.message && {
+                  message: errors.message.message,
+                }),
+              }}
+              clearFieldError={clearFieldError}
+            />
 
             <VoiceRecordingSection
               voiceState={voiceState}

@@ -1,0 +1,451 @@
+"use client";
+// STRICT Egyptian phone number validation
+import { parsePhoneNumber, isValidPhoneNumber } from "react-phone-number-input";
+
+/**
+ * STRICT validation for Egyptian phone numbers
+ * Does NOT rely solely on libphonenumber-js due to metadata issues
+ */
+export const isValidEgyptianPhone = (phone: string): boolean => {
+  if (!phone) return false;
+
+  try {
+    // Parse the phone number
+    const phoneNumber = parsePhoneNumber(phone);
+
+    // If not Egyptian, use standard validation
+    if (phoneNumber?.country !== "EG") {
+      return isValidPhoneNumber(phone);
+    }
+
+    // For Egyptian numbers, use STRICT validation
+    const nationalNumber = phoneNumber.nationalNumber;
+
+    console.log("Validating Egyptian number:", {
+      input: phone,
+      national: nationalNumber,
+      length: nationalNumber.length,
+    });
+
+    // Egyptian Mobile Numbers: MUST be EXACTLY 11 digits (01X XXXX XXXX)
+    // Valid prefixes: 010, 011, 012, 015
+    const mobilePattern = /^1[0125]\d{8}$/;
+    const isValidMobile =
+      mobilePattern.test(nationalNumber) && nationalNumber.length === 10;
+
+    // Egyptian Landline Numbers:
+    // Cairo (02): Must be 10 digits (02 XXXX XXXX)
+    // Alexandria (03): Must be 9 digits (03 XXX XXXX)
+    // Other cities (04-09): Must be 9 digits (0X XXX XXXX)
+    const isValidCairoLandline =
+      /^02\d{8}$/.test(nationalNumber) && nationalNumber.length === 10;
+    const isValidAlexLandline =
+      /^03\d{7}$/.test(nationalNumber) && nationalNumber.length === 9;
+    const isValidOtherLandline =
+      /^0[4-9]\d{7}$/.test(nationalNumber) && nationalNumber.length === 9;
+
+    const isValid =
+      isValidMobile ||
+      isValidCairoLandline ||
+      isValidAlexLandline ||
+      isValidOtherLandline;
+
+    console.log("Validation result:", {
+      isValidMobile,
+      isValidLandline:
+        isValidCairoLandline || isValidAlexLandline || isValidOtherLandline,
+      finalResult: isValid,
+    });
+
+    return isValid;
+  } catch (error) {
+    console.error("Phone parsing error:", error);
+
+    // Fallback: Manual validation without parsing
+    const cleaned = phone.replace(/[\s\-\(\)]/g, "");
+
+    // With +20 prefix
+    if (cleaned.startsWith("+20")) {
+      const numberPart = cleaned.substring(3);
+
+      // Mobile: 11 digits starting with 01[0125]
+      if (/^1[0125]\d{8}$/.test(numberPart) && numberPart.length === 10) {
+        return true;
+      }
+
+      // Cairo landline: 10 digits starting with 02
+      if (/^02\d{8}$/.test(numberPart) && numberPart.length === 10) {
+        return true;
+      }
+
+      // Alex landline: 9 digits starting with 03
+      if (/^03\d{7}$/.test(numberPart) && numberPart.length === 9) {
+        return true;
+      }
+
+      // Other landlines: 9 digits starting with 04-09
+      if (/^0[4-9]\d{7}$/.test(numberPart) && numberPart.length === 9) {
+        return true;
+      }
+
+      return false;
+    }
+
+    // Without prefix (assume Egyptian)
+    if (cleaned.startsWith("01")) {
+      return /^01[0125]\d{8}$/.test(cleaned) && cleaned.length === 11;
+    }
+
+    return false;
+  }
+};
+
+/**
+ * Get detailed validation info (for debugging)
+ */
+export const getEgyptianPhoneInfo = (phone: string) => {
+  try {
+    const phoneNumber = parsePhoneNumber(phone);
+    const nationalNumber = phoneNumber?.nationalNumber || "";
+
+    return {
+      input: phone,
+      country: phoneNumber?.country,
+      national: nationalNumber,
+      international: phoneNumber?.format("INTERNATIONAL"),
+      e164: phoneNumber?.format("E.164"),
+      length: nationalNumber.length,
+      isPossible: phoneNumber?.isPossible(),
+      isValid: isValidPhoneNumber(phone),
+      isValidStrict: isValidEgyptianPhone(phone),
+      type: getPhoneType(nationalNumber),
+      operator: getEgyptianOperator(phone),
+    };
+  } catch (error: any) {
+    return {
+      input: phone,
+      error: error.message,
+      isValidStrict: false,
+    };
+  }
+};
+
+/**
+ * Determine phone type
+ */
+export const getPhoneType = (nationalNumber: string): string => {
+  if (/^1[0125]\d{8}$/.test(nationalNumber) && nationalNumber.length === 10) {
+    return "Mobile";
+  }
+  if (/^02\d{8}$/.test(nationalNumber) && nationalNumber.length === 10) {
+    return "Cairo Landline";
+  }
+  if (/^03\d{7}$/.test(nationalNumber) && nationalNumber.length === 9) {
+    return "Alexandria Landline";
+  }
+  if (/^0[4-9]\d{7}$/.test(nationalNumber) && nationalNumber.length === 9) {
+    return "Other City Landline";
+  }
+  return "Invalid";
+};
+
+/**
+ * Format Egyptian phone number for display
+ */
+export const formatEgyptianPhone = (phone: string): string => {
+  try {
+    const phoneNumber = parsePhoneNumber(phone);
+    if (phoneNumber?.country === "EG") {
+      const national = phoneNumber.nationalNumber;
+
+      // Mobile: 010 1234 5678
+      if (national.length === 11 && national.startsWith("01")) {
+        return national.replace(/^(01\d)(\d{4})(\d{4})$/, "$1 $2 $3");
+      }
+
+      // Cairo landline: 02 1234 5678
+      if (national.length === 10 && national.startsWith("02")) {
+        return national.replace(/^(02)(\d{4})(\d{4})$/, "$1 $2 $3");
+      }
+
+      // Alexandria landline: 03 123 4567
+      if (national.length === 9 && national.startsWith("03")) {
+        return national.replace(/^(03)(\d{3})(\d{4})$/, "$1 $2 $3");
+      }
+
+      // Other landlines: 0X 123 4567
+      if (national.length === 9 && /^0[4-9]/.test(national)) {
+        return national.replace(/^(0\d)(\d{3})(\d{4})$/, "$1 $2 $3");
+      }
+    }
+
+    return phoneNumber?.formatNational() || phone;
+  } catch {
+    return phone;
+  }
+};
+
+/**
+ * Get Egyptian mobile operator from phone number
+ */
+export const getEgyptianOperator = (phone: string): string | null => {
+  try {
+    const phoneNumber = parsePhoneNumber(phone);
+    if (phoneNumber?.country === "EG") {
+      const national = phoneNumber.nationalNumber;
+
+      if (national.length === 11 && national.startsWith("010"))
+        return "Vodafone";
+      if (national.length === 11 && national.startsWith("011"))
+        return "Etisalat";
+      if (national.length === 11 && national.startsWith("012")) return "Orange";
+      if (national.length === 11 && national.startsWith("015")) return "WE";
+    }
+    return null;
+  } catch {
+    return null;
+  }
+};
+
+// React Hook Form validation component
+import React from "react";
+import { useFormContext, Controller } from "react-hook-form";
+import PhoneInput from "react-phone-number-input";
+import ar from "react-phone-number-input/locale/ar.json";
+import "react-phone-number-input/style.css";
+
+export default function StrictEgyptianPhoneInput() {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+
+  return (
+    <div className="w-full">
+      <label className="block text-sm font-semibold text-gray-700 mb-3">
+        رقم الهاتف *
+      </label>
+
+      <Controller
+        name="phone"
+        control={control}
+        rules={{
+          required: "رقم الهاتف مطلوب",
+          validate: (value) => {
+            if (!value) return "رقم الهاتف مطلوب";
+
+            // Use STRICT validation
+            const isValid = isValidEgyptianPhone(value);
+
+            if (!isValid) {
+              try {
+                const phoneNumber = parsePhoneNumber(value);
+                const national = phoneNumber?.nationalNumber || "";
+
+                // Provide specific error messages
+                if (phoneNumber?.country === "EG") {
+                  if (national.startsWith("01")) {
+                    if (national.length < 11) {
+                      return "رقم الموبايل قصير جداً. يجب أن يكون 11 رقماً";
+                    }
+                    if (national.length > 11) {
+                      return "رقم الموبايل طويل جداً. يجب أن يكون 11 رقماً فقط";
+                    }
+                    if (!/^01[0125]/.test(national)) {
+                      return "رقم الموبايل يجب أن يبدأ بـ 010 أو 011 أو 012 أو 015";
+                    }
+                  }
+
+                  if (national.startsWith("02") && national.length !== 10) {
+                    return "رقم القاهرة يجب أن يكون 10 أرقام";
+                  }
+
+                  if (national.startsWith("03") && national.length !== 9) {
+                    return "رقم الإسكندرية يجب أن يكون 9 أرقام";
+                  }
+                }
+
+                return "رقم الهاتف غير صحيح";
+              } catch {
+                return "رقم الهاتف غير صحيح";
+              }
+            }
+
+            return true;
+          },
+        }}
+        render={({ field: { onChange, value } }) => (
+          <div>
+            <PhoneInput
+              international
+              defaultCountry="EG"
+              value={value}
+              onChange={onChange}
+              labels={ar}
+              placeholder="+20 10 1234 5678"
+              className={errors.phone ? "phone-error" : ""}
+            />
+
+            {/* Show validation info for debugging (remove in production) */}
+            {value && process.env.NODE_ENV === "development" && (
+              <div className="mt-2 text-xs text-gray-500 font-mono">
+                {(() => {
+                  const info = getEgyptianPhoneInfo(value);
+                  return (
+                    <div>
+                      <div>Length: {info.length} digits</div>
+                      <div>Type: {info.type}</div>
+                      <div>Lib Valid: {info.isValid ? "✅" : "❌"}</div>
+                      <div>
+                        Strict Valid: {info.isValidStrict ? "✅" : "❌"}
+                      </div>
+                      {info.operator && <div>Operator: {info.operator}</div>}
+                    </div>
+                  );
+                })()}
+              </div>
+            )}
+
+            {/* Show operator info for valid Egyptian mobile numbers */}
+            {value && !errors.phone && (
+              <div className="mt-2 text-sm text-gray-600">
+                {(() => {
+                  const operator = getEgyptianOperator(value);
+                  if (operator) {
+                    return (
+                      <span className="flex items-center gap-1">
+                        <svg
+                          className="w-4 h-4"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                        </svg>
+                        {operator}
+                      </span>
+                    );
+                  }
+                  return null;
+                })()}
+              </div>
+            )}
+          </div>
+        )}
+      />
+
+      {errors.phone && (
+        <p className="mt-2 text-sm text-red-600 flex items-center">
+          <svg className="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fillRule="evenodd"
+              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+              clipRule="evenodd"
+            />
+          </svg>
+          {errors.phone.message as string}
+        </p>
+      )}
+    </div>
+  );
+}
+
+// Test cases - Run these to verify
+export const testStrictValidation = () => {
+  const testCases = [
+    // Valid mobile numbers
+    { phone: "+201012345678", expected: true, desc: "Vodafone 11 digits" },
+    { phone: "+201112345678", expected: true, desc: "Etisalat 11 digits" },
+    { phone: "+201212345678", expected: true, desc: "Orange 11 digits" },
+    { phone: "+201512345678", expected: true, desc: "WE 11 digits" },
+
+    // Invalid mobile numbers
+    { phone: "+20 12 028400", expected: false, desc: "TOO SHORT - 8 digits" },
+    { phone: "+2010123456", expected: false, desc: "TOO SHORT - 9 digits" },
+    { phone: "+201012345", expected: false, desc: "TOO SHORT - 10 digits" },
+    { phone: "+20101234567890", expected: false, desc: "TOO LONG - 13 digits" },
+    { phone: "+201312345678", expected: false, desc: "Invalid prefix 013" },
+    { phone: "+201412345678", expected: false, desc: "Invalid prefix 014" },
+
+    // Valid landlines
+    { phone: "+20223456789", expected: true, desc: "Cairo landline 10 digits" },
+    { phone: "+2023456789", expected: true, desc: "Cairo landline alt format" },
+    {
+      phone: "+20312345678",
+      expected: true,
+      desc: "Alexandria landline 9 digits",
+    },
+    {
+      phone: "+20482345678",
+      expected: true,
+      desc: "Other city landline 9 digits",
+    },
+
+    // Invalid landlines
+    { phone: "+202234567", expected: false, desc: "Cairo too short" },
+    { phone: "+2031234567890", expected: false, desc: "Alexandria too long" },
+  ];
+
+  console.log("\n=== STRICT Egyptian Phone Validation Tests ===\n");
+
+  testCases.forEach(({ phone, expected, desc }) => {
+    const result = isValidEgyptianPhone(phone);
+    const info = getEgyptianPhoneInfo(phone);
+    const status = result === expected ? "✅ PASS" : "❌ FAIL";
+
+    console.log(`${status} | ${desc}`);
+    console.log(`  Input: ${phone}`);
+    console.log(`  Expected: ${expected}, Got: ${result}`);
+    console.log(`  Length: ${info.length}, Type: ${info.type}`);
+    console.log(
+      `  Lib says valid: ${info.isValid}, Strict says: ${info.isValidStrict}`
+    );
+    console.log("");
+  });
+};
+
+// Backend validation middleware
+// import { Request, Response, NextFunction } from "express";
+
+// export const strictEgyptianPhoneMiddleware = (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+//   const { phone } = req.body;
+
+//   if (!phone) {
+//     return res.status(400).json({
+//       success: false,
+//       error: "رقم الهاتف مطلوب",
+//     });
+//   }
+
+//   // Use STRICT validation
+//   if (!isValidEgyptianPhone(phone)) {
+//     const info = getEgyptianPhoneInfo(phone);
+
+//     return res.status(400).json({
+//       success: false,
+//       error: "رقم الهاتف غير صحيح",
+//       details: {
+//         length: info.length,
+//         type: info.type,
+//         expectedLength: info.national?.startsWith("01") ? 11 :
+//                        info.national?.startsWith("02") ? 10 : 9,
+//       },
+//     });
+//   }
+
+//   try {
+//     const phoneNumber = parsePhoneNumber(phone);
+//     req.body.formattedPhone = phoneNumber.format("E.164");
+//     req.body.phoneType = getPhoneType(phoneNumber.nationalNumber);
+//     req.body.operator = getEgyptianOperator(phone);
+//     next();
+//   } catch (error) {
+//     return res.status(400).json({
+//       success: false,
+//       error: "فشل في معالجة رقم الهاتف",
+//     });
+//   }
+// };

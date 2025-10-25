@@ -1,5 +1,6 @@
 import React from "react";
-import { Course, Courses, FormErrors } from "../../types";
+import { Course, Courses, FormErrors, IFormValues } from "../../types";
+import { UseFormRegister } from "react-hook-form";
 
 interface CourseSelectionSectionProps {
   courses: Courses;
@@ -7,6 +8,7 @@ interface CourseSelectionSectionProps {
   setSelectedCourse: (course: string) => void;
   formErrors: FormErrors;
   clearFieldError: (fieldName: string) => void;
+  register: UseFormRegister<IFormValues>;
 }
 
 export default function CourseSelectionSection({
@@ -15,6 +17,7 @@ export default function CourseSelectionSection({
   setSelectedCourse,
   formErrors,
   clearFieldError,
+  register,
 }: CourseSelectionSectionProps) {
   return (
     <div className="bg-gray-100 rounded-2xl p-6">
@@ -38,13 +41,12 @@ export default function CourseSelectionSection({
         <div className="relative">
           <select
             id="course"
-            name="course"
-            required
-            value={selectedCourse}
-            onChange={(e) => {
-              setSelectedCourse(e.target.value);
-              clearFieldError("course");
-            }}
+            {...register("course", {
+              onChange: (e) => {
+                setSelectedCourse(e.target.value);
+                clearFieldError("course");
+              },
+            })}
             className={`w-full px-4 py-4 border-2 rounded-xl focus:ring-2 transition-all duration-300 bg-white appearance-none ${
               formErrors.course
                 ? "border-red-500 focus:ring-red-500 focus:border-red-500"
@@ -56,7 +58,7 @@ export default function CourseSelectionSection({
               (course: Course) =>
                 course.availableSeats > 0 && (
                   <option key={course.id} value={course.title}>
-                    {course.title} - {course.category.name}
+                    {course.title}
                   </option>
                 )
             )}
