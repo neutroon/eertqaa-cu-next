@@ -4,13 +4,20 @@ import { useVoiceRecording } from "../hooks/useVoiceRecording";
 import { useFormSubmission } from "../hooks/useFormSubmission";
 import { useForm, SubmitHandler } from "react-hook-form";
 
+// Declare global fbq function
+declare global {
+  interface Window {
+    fbq: any;
+  }
+}
+
 // Form sections
 import MainInfoSection from "./forms/PersonalInfoSection";
 import CourseSelectionSection from "./forms/CourseSelectionSection";
 import LearningPreferencesSection from "./forms/LearningPreferencesSection";
 import AdditionalMessageSection from "./forms/AdditionalMessageSection";
 import VoiceRecordingSection from "./forms/VoiceRecordingSection";
-import { fbq } from "react-facebook-pixel";
+// Remove the direct fbq import - we'll use window.fbq instead
 
 export default function RegistrationFormRefactored({
   courses,
@@ -53,11 +60,14 @@ export default function RegistrationFormRefactored({
   }, [cleanup]);
 
   const onFormSuccess = (data: IFormValues) => {
-    fbq("track", "Form submission", {
-      name: data.firstName,
-      phone: data.phone,
-      selectedCourse: data.course,
-    });
+    // Check if fbq is available and call it safely
+    if (typeof window !== "undefined" && window.fbq) {
+      window.fbq("track", "Lead", {
+        name: data.firstName,
+        phone: data.phone,
+        selectedCourse: data.course ? data.course : "other",
+      });
+    }
     deleteRecording();
   };
   return (
