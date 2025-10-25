@@ -10,6 +10,7 @@ import CourseSelectionSection from "./forms/CourseSelectionSection";
 import LearningPreferencesSection from "./forms/LearningPreferencesSection";
 import AdditionalMessageSection from "./forms/AdditionalMessageSection";
 import VoiceRecordingSection from "./forms/VoiceRecordingSection";
+import { fbq } from "react-facebook-pixel";
 
 export default function RegistrationFormRefactored({
   courses,
@@ -39,7 +40,7 @@ export default function RegistrationFormRefactored({
 
   const onSubmit = (data: IFormValues) => {
     handleFormSubmit(data, voiceState.audioBlob, setSelectedCourse, () => {
-      onFormSuccess();
+      onFormSuccess(data);
       reset(); // Reset React Hook Form
     });
   };
@@ -51,7 +52,12 @@ export default function RegistrationFormRefactored({
     };
   }, [cleanup]);
 
-  const onFormSuccess = () => {
+  const onFormSuccess = (data: IFormValues) => {
+    fbq("track", "Form submission", {
+      name: data.firstName,
+      phone: data.phone,
+      selectedCourse: data.course,
+    });
     deleteRecording();
   };
   return (
