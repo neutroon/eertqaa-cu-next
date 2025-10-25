@@ -1,7 +1,7 @@
 // components/MetaPixel.tsx
 "use client"; // if using app router
 
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 
 declare global {
@@ -10,7 +10,7 @@ declare global {
   }
 }
 
-export default function MetaPixel({ pixelId }: { pixelId: string }) {
+function MetaPixelContent({ pixelId }: { pixelId: string }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -32,4 +32,12 @@ export default function MetaPixel({ pixelId }: { pixelId: string }) {
   }, [pathname, searchParams]);
 
   return null;
+}
+
+export default function MetaPixel({ pixelId }: { pixelId: string }) {
+  return (
+    <Suspense fallback={null}>
+      <MetaPixelContent pixelId={pixelId} />
+    </Suspense>
+  );
 }
