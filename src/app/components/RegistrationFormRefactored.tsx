@@ -1,7 +1,8 @@
 import { useEffect } from "react";
-import { RegistrationFormProps } from "../types";
+import { IFormValues, RegistrationFormProps } from "../types";
 import { useVoiceRecording } from "../hooks/useVoiceRecording";
 import { useFormSubmission } from "../hooks/useFormSubmission";
+import { useForm, SubmitHandler } from "react-hook-form";
 
 // Form sections
 import MainInfoSection from "./forms/PersonalInfoSection";
@@ -27,7 +28,21 @@ export default function RegistrationFormRefactored({
     cleanup,
   } = useVoiceRecording();
 
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+    reset,
+  } = useForm<IFormValues>();
   const { formState, clearFieldError, handleFormSubmit } = useFormSubmission();
+
+  const onSubmit = (data: IFormValues) => {
+    handleFormSubmit(data, voiceState.audioBlob, setSelectedCourse, () => {
+      onFormSuccess();
+      reset(); // Reset React Hook Form
+    });
+  };
 
   // Cleanup effect
   useEffect(() => {
@@ -39,7 +54,6 @@ export default function RegistrationFormRefactored({
   const onFormSuccess = () => {
     deleteRecording();
   };
-
   return (
     <section
       id="register"
@@ -52,20 +66,6 @@ export default function RegistrationFormRefactored({
 
       <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          {/* <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/20 text-white text-sm font-medium mb-6">
-            <svg
-              className="w-4 h-4 ml-2"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path
-                fillRule="evenodd"
-                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                clipRule="evenodd"
-              />
-            </svg>
-            تسجيل مجاني
-          </div> */}
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 arabic-heading">
             سجل الآن
           </h2>
@@ -161,32 +161,57 @@ export default function RegistrationFormRefactored({
           <form
             className="space-y-8"
             noValidate
-            onSubmit={(e) =>
-              handleFormSubmit(
-                e,
-                voiceState.audioBlob,
-                setSelectedCourse,
-                onFormSuccess
-              )
-            }
+            onSubmit={handleSubmit(onSubmit)}
           >
             {/* Form Sections */}
             <MainInfoSection
-              formErrors={formState.formErrors}
+              register={register}
+              control={control}
+              formErrors={{
+                ...formState.formErrors,
+                ...(errors.firstName?.message && {
+                  firstName: errors.firstName.message,
+                }),
+                ...(errors.phone?.message && { phone: errors.phone.message }),
+              }}
               clearFieldError={clearFieldError}
             />
 
             <CourseSelectionSection
+              register={register}
               courses={courses}
               selectedCourse={selectedCourse}
               setSelectedCourse={setSelectedCourse}
-              formErrors={formState.formErrors}
+              formErrors={{
+                ...formState.formErrors,
+                ...(errors.course?.message && {
+                  course: errors.course.message,
+                }),
+              }}
               clearFieldError={clearFieldError}
             />
 
-            <LearningPreferencesSection />
+            <LearningPreferencesSection
+              register={register}
+              formErrors={{
+                ...formState.formErrors,
+                ...(errors.preferredMethod?.message && {
+                  preferredMethod: errors.preferredMethod.message,
+                }),
+              }}
+              clearFieldError={clearFieldError}
+            />
 
-            <AdditionalMessageSection />
+            <AdditionalMessageSection
+              register={register}
+              formErrors={{
+                ...formState.formErrors,
+                ...(errors.message?.message && {
+                  message: errors.message.message,
+                }),
+              }}
+              clearFieldError={clearFieldError}
+            />
 
             <VoiceRecordingSection
               voiceState={voiceState}
