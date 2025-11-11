@@ -62,7 +62,7 @@ export default function RegistrationFormRefactored({
   const onFormSuccess = (data: IFormValues) => {
     // Check if fbq is available and call it safely
     if (typeof window !== "undefined" && window.fbq) {
-      window.fbq("track", "Lead", {
+      window.fbq("track", "Purchase", {
         name: data.firstName,
         phone: data.phone,
         selectedCourse: data.course ? data.course : "other",
