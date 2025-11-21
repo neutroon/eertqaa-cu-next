@@ -8,13 +8,14 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-center items-center flex-wrap md:flex-nowrap gap-6">
             <div className="flex items-center space-x-4 backdrop-blur-sm sm:border-2 border-white rounded-2xl px-2">
-              <div className="bg-opacity-20 backdrop-blur-sm sm:border-e-2 border-white flex items-center justify-center">
+              <div className="relative w-16 h-20 bg-opacity-20 backdrop-blur-sm sm:border-e-2 border-white flex items-center justify-center">
                 <Image
                   src="/cu-logo.png"
                   alt="جامعة القاهرة"
-                  width={64}
-                  height={64}
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="64px"
+                  className="object-cover"
+                  quality={10}
                 />
               </div>
               <div className="text-gray-700 hidden lg:block">
