@@ -4,104 +4,28 @@ import Image from "next/image";
 import { useState, useRef } from "react";
 
 export default function Hero() {
-  const [showVideo, setShowVideo] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-
+  const [pauseVid, setPauseVid] = useState(false);
   const toggleVideo = () => {
-    setShowVideo(!showVideo);
-    if (!showVideo) {
-      // Add slight delay to show loading state
-      setTimeout(() => {
-        if (videoRef.current) {
-          videoRef.current.play().catch(console.error);
-        }
-      }, 100);
+    if (pauseVid) {
+      setPauseVid(!pauseVid);
+      if (videoRef.current) {
+        videoRef.current.play().catch(console.error);
+      }
     } else if (videoRef.current) {
+      setPauseVid(!pauseVid);
       videoRef.current.pause();
     }
   };
 
-  //   const handleVideoLoadStart = () => {
-  //     const loadingOverlay = document.getElementById("video-loading");
-  //     if (loadingOverlay) {
-  //       loadingOverlay.style.display = "block";
-  //     }
-  //   };
-
-  //   const handleVideoCanPlay = () => {
-  //     const loadingOverlay = document.getElementById("video-loading");
-  //     if (loadingOverlay) {
-  //       loadingOverlay.style.display = "none";
-  //     }
-  //   };
-
   const handleVideoError = () => {
-    alert("عذراً، حدث خطأ في تحميل الفيديو. يرجى المحاولة مرة أخرى.");
+    // alert("عذراً، حدث خطأ في تحميل الفيديو. يرجى المحاولة مرة أخرى.");
   };
 
   return (
     <>
       {/* Hero Section */}
       <section className="relative pt-8 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden min-h-[calc(100vh-140px)] md:min-h-[calc(100vh-78px)] flex items-center">
-        {/* Full Screen Video Modal */}
-        {showVideo && (
-          <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
-            <div className="relative w-full h-full">
-              {/* Close Button */}
-              <button
-                onClick={toggleVideo}
-                className="absolute top-6 right-6 z-20 w-12 h-12 bg-black bg-opacity-50 hover:bg-opacity-70 rounded-full flex items-center justify-center text-white transition-all duration-300 backdrop-blur-sm"
-              >
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-
-              {/* Video Player */}
-              <video
-                ref={videoRef}
-                className="w-full h-full object-contain bg-black"
-                controls
-                autoPlay
-                muted
-                playsInline
-                preload="metadata"
-                // onLoadStart={handleVideoLoadStart}
-                // onCanPlay={handleVideoCanPlay}
-                onError={handleVideoError}
-                poster="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyMCIgaGVpZ2h0PSIxMDgwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjNGY0NmU1Ii8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjN2M3M2U5Ii8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNnKSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LXNpemU9IjQ4IiBmb250LWZhbWlseT0iQXJpYWwiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+2KzYp9mF2LnYqSDYudmK2YYg2LTZhdizPC90ZXh0Pjwvc3ZnPg=="
-              >
-                <source
-                  src="https://res.cloudinary.com/duncei4g4/video/upload/v1760407332/Rawaa_ouv0d8.mov"
-                  type="video/mp4"
-                />
-                عذراً، متصفحك لا يدعم تشغيل الفيديو.
-              </video>
-
-              {/* Loading Overlay */}
-              {/* <div
-                className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center pointer-events-none opacity-0 transition-opacity duration-300"
-                id="video-loading"
-              >
-                <div className="text-white text-center">
-                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
-                  <p className="arabic-text">جاري تحميل الفيديو...</p>
-                </div>
-              </div> */}
-            </div>
-          </div>
-        )}
-
         <div className="max-w-7xl mx-auto w-full">
           <div className="text-center absolute top-0 start-0 end-0 bottom-0 w-full">
             {/* Autoplay Video Background */}
@@ -121,7 +45,8 @@ export default function Hero() {
                   onError={handleVideoError}
                 >
                   <source
-                    src="https://res.cloudinary.com/duncei4g4/video/upload/v1760407332/Rawaa_ouv0d8.mov"
+                    // src="https://res.cloudinary.com/duncei4g4/video/upload/v1760407332/Rawaa_ouv0d8.mov"
+                    src="https://res.cloudinary.com/dbguvim9b/video/upload/v1763689460/Rawaa_1_f4hxag.mov"
                     type="video/mp4"
                   />
                   عذراً، متصفحك لا يدعم تشغيل الفيديو.
@@ -130,24 +55,58 @@ export default function Hero() {
                 {/* Video Overlay with Controls */}
                 <div className="absolute inset-0 transition-all duration-300">
                   {/* Fullscreen Button */}
-                  {/* <button
+                  <button
                     onClick={toggleVideo}
-                    className="absolute top-8 right-24 z-20 w-12 h-12 bg-white bg-opacity-20 hover:bg-opacity-30 backdrop-blur-sm rounded-full flex items-center justify-center text-white transition-all duration-300 group"
+                    className="absolute top-8 right-24 z-20 w-12 h-12 bg-white bg-opacity-20 hover:bg-opacity-30 backdrop-blur-sm rounded-full flex items-center justify-center text-background transition-all duration-300 group"
                   >
-                    <svg
-                      className="w-6 h-6 group-hover:scale-110 transition-transform"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"
-                      />
-                    </svg>
-                  </button> */}
+                    {pauseVid ? (
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                        <g
+                          id="SVGRepo_tracerCarrier"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          stroke="#CCCCCC"
+                          strokeWidth="0"
+                        ></g>
+                        <g id="SVGRepo_iconCarrier">
+                          {" "}
+                          <path
+                            fillRule="evenodd"
+                            clipRule="evenodd"
+                            d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM10.6935 15.8458L15.4137 13.059C16.1954 12.5974 16.1954 11.4026 15.4137 10.941L10.6935 8.15419C9.93371 7.70561 9 8.28947 9 9.21316V14.7868C9 15.7105 9.93371 16.2944 10.6935 15.8458Z"
+                            fill="#155dfc"
+                          ></path>{" "}
+                        </g>
+                      </svg>
+                    ) : (
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                        <g
+                          id="SVGRepo_tracerCarrier"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        ></g>
+                        <g id="SVGRepo_iconCarrier">
+                          {" "}
+                          <path
+                            fillRule="evenodd"
+                            clipRule="evenodd"
+                            d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM8.07612 8.61732C8 8.80109 8 9.03406 8 9.5V14.5C8 14.9659 8 15.1989 8.07612 15.3827C8.17761 15.6277 8.37229 15.8224 8.61732 15.9239C8.80109 16 9.03406 16 9.5 16C9.96594 16 10.1989 16 10.3827 15.9239C10.6277 15.8224 10.8224 15.6277 10.9239 15.3827C11 15.1989 11 14.9659 11 14.5V9.5C11 9.03406 11 8.80109 10.9239 8.61732C10.8224 8.37229 10.6277 8.17761 10.3827 8.07612C10.1989 8 9.96594 8 9.5 8C9.03406 8 8.80109 8 8.61732 8.07612C8.37229 8.17761 8.17761 8.37229 8.07612 8.61732ZM13.0761 8.61732C13 8.80109 13 9.03406 13 9.5V14.5C13 14.9659 13 15.1989 13.0761 15.3827C13.1776 15.6277 13.3723 15.8224 13.6173 15.9239C13.8011 16 14.0341 16 14.5 16C14.9659 16 15.1989 16 15.3827 15.9239C15.6277 15.8224 15.8224 15.6277 15.9239 15.3827C16 15.1989 16 14.9659 16 14.5V9.5C16 9.03406 16 8.80109 15.9239 8.61732C15.8224 8.37229 15.6277 8.17761 15.3827 8.07612C15.1989 8 14.9659 8 14.5 8C14.0341 8 13.8011 8 13.6173 8.07612C13.3723 8.17761 13.1776 8.37229 13.0761 8.61732Z"
+                            fill="#155dfc"
+                          ></path>{" "}
+                        </g>
+                      </svg>
+                    )}
+                  </button>
 
                   {/* Content Overlay */}
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/70 to-transparent p-12 z-20">
