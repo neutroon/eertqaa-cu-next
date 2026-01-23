@@ -2,7 +2,10 @@
 export type IFormValues = {
   firstName: string;
   phone: string;
-  course: string;
+  course: {
+    name: string;
+    courseId: string;
+  };
   preferredMethod: string;
   message: string;
 };
@@ -90,7 +93,10 @@ export interface FormState {
 export interface RegistrationPayload {
   name: string;
   phone: string;
-  selectedProgram: string;
+  selectedProgram: {
+    name: string;
+    courseId: string;
+  };
   learningPreference: string;
   message: string;
   voiceMessage: string;
@@ -131,6 +137,6 @@ export interface FormSubmissionHookReturn {
     e: React.FormEvent,
     voiceBlob: Blob | null,
     setSelectedCourse: (course: string) => void,
-    onSuccess?: () => void
+    onSuccess?: () => void,
   ) => Promise<void>;
 }
