@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { IFormValues, RegistrationFormProps } from "../types";
 import { useVoiceRecording } from "../hooks/useVoiceRecording";
 import { useFormSubmission } from "../hooks/useFormSubmission";
@@ -24,6 +24,12 @@ export default function RegistrationFormRefactored({
   selectedCourse,
   setSelectedCourse,
 }: RegistrationFormProps) {
+  // State for course object
+  const [courseObject, setCourseObject] = useState<{
+    name: string;
+    courseId: string;
+  } | null>(null);
+
   // Custom hooks
   const {
     voiceState,
@@ -45,10 +51,32 @@ export default function RegistrationFormRefactored({
   } = useForm<IFormValues>();
   const { formState, clearFieldError, handleFormSubmit } = useFormSubmission();
 
+  // Sync courseObject when selectedCourse changes (e.g., from clicking "Register Now")
+  useEffect(() => {
+    if (selectedCourse && !courseObject) {
+      // Find the course in the courses list to get the courseId
+      const foundCourse = courses.data.courses.find(
+        (course) => course.title === selectedCourse
+      );
+      if (foundCourse) {
+        setCourseObject({
+          name: foundCourse.title,
+          courseId: foundCourse.id,
+        });
+      }
+    }
+  }, [selectedCourse, courses, courseObject]);
+
   const onSubmit = (data: IFormValues) => {
-    handleFormSubmit(data, voiceState.audioBlob, setSelectedCourse, () => {
-      onFormSuccess(data);
+    // Set the course object in the form data
+    const formDataWithCourse = {
+      ...data,
+      course: courseObject || { name: "", courseId: "" },
+    };
+    handleFormSubmit(formDataWithCourse, voiceState.audioBlob, setSelectedCourse, () => {
+      onFormSuccess(formDataWithCourse);
       reset(); // Reset React Hook Form
+      setCourseObject(null); // Reset course object
     });
   };
 
@@ -65,7 +93,7 @@ export default function RegistrationFormRefactored({
       window.fbq("track", "Purchase", {
         name: data.firstName,
         phone: data.phone,
-        selectedCourse: data.course ? data.course : "other",
+        selectedCourse: data.course?.name || "other",
       });
     }
     deleteRecording();
@@ -198,6 +226,7 @@ export default function RegistrationFormRefactored({
               courses={courses}
               selectedCourse={selectedCourse}
               setSelectedCourse={setSelectedCourse}
+              setCourseObject={setCourseObject}
               formErrors={{
                 ...formState.formErrors,
                 ...(errors.course?.message && {
@@ -246,11 +275,10 @@ export default function RegistrationFormRefactored({
               <button
                 type="submit"
                 disabled={formState.isSubmitting || formState.isUploadingVoice}
-                className={`group py-5 px-12 rounded-2xl text-lg font-bold transition-all duration-300 shadow-2xl w-full md:w-auto ${
-                  formState.isSubmitting || formState.isUploadingVoice
-                    ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-gradient-to-r from-indigo-600 to-blue-600 text-white hover:from-indigo-700 hover:to-blue-700 hover:shadow-indigo-500/25 transform hover:-translate-y-1"
-                }`}
+                className={`group py-5 px-12 rounded-2xl text-lg font-bold transition-all duration-300 shadow-2xl w-full md:w-auto ${formState.isSubmitting || formState.isUploadingVoice
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-gradient-to-r from-indigo-600 to-blue-600 text-white hover:from-indigo-700 hover:to-blue-700 hover:shadow-indigo-500/25 transform hover:-translate-y-1"
+                  }`}
               >
                 <span className="flex items-center justify-center">
                   {formState.isSubmitting || formState.isUploadingVoice ? (
