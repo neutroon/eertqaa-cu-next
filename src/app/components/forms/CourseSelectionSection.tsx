@@ -9,6 +9,7 @@ interface CourseSelectionSectionProps {
   formErrors: FormErrors;
   clearFieldError: (fieldName: string) => void;
   register: UseFormRegister<IFormValues>;
+  setCourseObject: (course: { name: string; courseId: string } | null) => void;
 }
 
 export default function CourseSelectionSection({
@@ -18,6 +19,7 @@ export default function CourseSelectionSection({
   formErrors,
   clearFieldError,
   register,
+  setCourseObject,
 }: CourseSelectionSectionProps) {
   return (
     <div className="bg-gray-100 rounded-2xl p-6">
@@ -41,23 +43,40 @@ export default function CourseSelectionSection({
         <div className="relative">
           <select
             id="course"
+            value={selectedCourse}
             {...register("course", {
               onChange: (e) => {
-                setSelectedCourse(e.target.value);
+                const value = e.target.value;
+                const selectedOption = e.target.selectedOptions[0];
+
+                if (value && selectedOption) {
+                  const courseId = selectedOption.getAttribute('data-course-id');
+                  setSelectedCourse(value);
+                  setCourseObject({
+                    name: value,
+                    courseId: courseId || '',
+                  });
+                } else {
+                  setSelectedCourse("");
+                  setCourseObject(null);
+                }
                 clearFieldError("course");
               },
             })}
-            className={`w-full px-4 py-4 border-2 rounded-xl focus:ring-2 transition-all duration-300 bg-white appearance-none ${
-              formErrors.course
-                ? "border-red-500 focus:ring-red-500 focus:border-red-500"
-                : "border-gray-200 focus:ring-indigo-500 focus:border-indigo-500 hover:border-gray-300"
-            }`}
+            className={`w-full px-4 py-4 border-2 rounded-xl focus:ring-2 transition-all duration-300 bg-white appearance-none ${formErrors.course
+              ? "border-red-500 focus:ring-red-500 focus:border-red-500"
+              : "border-gray-200 focus:ring-indigo-500 focus:border-indigo-500 hover:border-gray-300"
+              }`}
           >
             <option value="">اختر البرنامج التدريبي</option>
             {courses.data.courses.map(
               (course: Course) =>
                 course.availableSeats > 0 && (
-                  <option key={course.id} value={course.title}>
+                  <option
+                    key={course.id}
+                    value={course.title}
+                    data-course-id={course.id}
+                  >
                     {course.title}
                   </option>
                 )
