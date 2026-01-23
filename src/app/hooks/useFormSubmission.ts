@@ -22,7 +22,7 @@ export const useFormSubmission = () => {
         });
       }
     },
-    [formState.formErrors]
+    [formState.formErrors],
   );
 
   const handleFormSubmit = useCallback(
@@ -30,7 +30,7 @@ export const useFormSubmission = () => {
       formData: any,
       voiceBlob: Blob | null,
       setSelectedCourse: (course: string) => void,
-      onSuccess?: () => void
+      onSuccess?: () => void,
     ) => {
       // Reset previous states
       setFormState((prev) => ({
@@ -46,13 +46,25 @@ export const useFormSubmission = () => {
         // Get form values from React Hook Form data
         const firstName = formData.firstName?.trim() || "";
         const phone = formData.phone?.trim() || "";
-        const course = formData.course || "";
+        const course = formData.course || null;
         const preferredMethod = formData.preferredMethod || "";
         const message = formData.message?.trim() || "";
 
         // Basic validation - React Hook Form handles most validation
         if (!firstName || !phone) {
           setFormState((prev) => ({ ...prev, isSubmitting: false }));
+          return;
+        }
+
+        // Validate course is selected
+        if (!course || !course.name || !course.courseId) {
+          setFormState((prev) => ({
+            ...prev,
+            formErrors: {
+              course: "يرجى اختيار البرنامج التدريبي",
+            },
+            isSubmitting: false,
+          }));
           return;
         }
 
@@ -136,7 +148,7 @@ export const useFormSubmission = () => {
         setFormState((prev) => ({ ...prev, isSubmitting: false }));
       }
     },
-    []
+    [],
   );
 
   return {
