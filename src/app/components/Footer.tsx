@@ -35,7 +35,7 @@ export default function Footer() {
               </h3>
             </div>
             <p className="text-gray-300 mb-6 arabic-text leading-relaxed text-lg">
-              برامج تدريبية معتمدة من جامعة القاهرة مع شهادات قابلة للتوثيق من
+              برامج تدريبية معتمدة من الجامعة مع شهادات قابلة للتوثيق من
               وزارة الخارجية
             </p>
             <div className="flex space-x-4">
@@ -178,7 +178,7 @@ export default function Footer() {
                 <div>
                   <p className="text-sm text-gray-400">العنوان</p>
                   <p className="font-semibold arabic-text">
-                    جامعة القاهرة، القاهرة
+                    مصر
                   </p>
                 </div>
               </div>

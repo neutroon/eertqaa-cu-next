@@ -114,8 +114,7 @@ export default function RegistrationFormRefactored({
             سجل الآن
           </h2>
           <p className="text-xl text-indigo-100 max-w-2xl mx-auto arabic-text">
-            احجز مكانك في البرنامج القادم واحصل على شهادة معتمدة من جامعة
-            القاهرة
+            احجز مكانك في البرنامج القادم واحصل على شهادة معتمدة من الجامعة
           </p>
         </div>
 

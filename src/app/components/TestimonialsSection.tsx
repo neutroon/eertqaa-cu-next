@@ -25,7 +25,7 @@ export default function TestimonialsSection({
       studentName: "نورهان مصطفى",
       rating: 5,
       comment:
-        "بصراحة برنامج التغذية التخصصية فرق معايا جدًا! المحتوى منظم والمدربين فاهمين كويس أوي. كنت دايمًا بدور على كورس يجمع بين العلم والتطبيق العملي وفعلاً لقيت ده هنا. الشهادة من جامعة القاهرة كمان خلت الـ CV بتاعي أقوى بكتير.",
+        "بصراحة برنامج التغذية التخصصية فرق معايا جدًا! المحتوى منظم والمدربين فاهمين كويس أوي. كنت دايمًا بدور على كورس يجمع بين العلم والتطبيق العملي وفعلاً لقيت ده هنا. الشهادة من الجامعة كمان خلت الـ CV بتاعي أقوى بكتير.",
       date: "2024-03-10",
       verified: true,
       jobTitle: "أخصائية تغذية علاجية",
@@ -114,8 +114,7 @@ export default function TestimonialsSection({
               ماذا يقول طلابنا؟
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto arabic-text">
-              انضم إلى آلاف الطلاب الذين حصلوا على شهادات معتمدة من جامعة
-              القاهرة
+              انضم إلى آلاف الطلاب الذين حصلوا على شهادات معتمدة من الجامعة
             </p>
           </div>
 
@@ -188,11 +187,10 @@ export default function TestimonialsSection({
                         {[...Array(5)].map((_, i) => (
                           <svg
                             key={i}
-                            className={`w-4 h-4 ${
-                              i < review.rating
-                                ? "text-yellow-400"
-                                : "text-gray-300"
-                            }`}
+                            className={`w-4 h-4 ${i < review.rating
+                              ? "text-yellow-400"
+                              : "text-gray-300"
+                              }`}
                             fill="currentColor"
                             viewBox="0 0 20 20"
                           >
@@ -355,11 +353,10 @@ export default function TestimonialsSection({
                       onClick={() =>
                         setReviewFormData({ ...reviewFormData, rating: star })
                       }
-                      className={`w-10 h-10 transition-colors ${
-                        star <= reviewFormData.rating
-                          ? "text-yellow-400"
-                          : "text-gray-300 hover:text-yellow-300"
-                      }`}
+                      className={`w-10 h-10 transition-colors ${star <= reviewFormData.rating
+                        ? "text-yellow-400"
+                        : "text-gray-300 hover:text-yellow-300"
+                        }`}
                     >
                       <svg
                         className="w-full h-full"

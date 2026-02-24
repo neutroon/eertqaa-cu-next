@@ -119,7 +119,7 @@ export default function Hero() {
                       </h1>
                       <p className="text-center text-gray-200 arabic-text text-xl md:text-2xl mb-8 leading-relaxed">
                         انضم إلى أكثر من 30 برنامج تدريبي متخصص واحصل على شهادة
-                        مختومة بختم النسر من جامعة القاهرة
+                        مختومة بختم النسر من الجامعة
                       </p>
 
                       {/* Action Buttons */}

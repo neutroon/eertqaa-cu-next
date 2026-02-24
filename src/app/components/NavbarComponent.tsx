@@ -11,7 +11,7 @@ export default function Navbar() {
               <div className="relative w-16 h-20 bg-opacity-20 backdrop-blur-sm sm:border-e-2 border-white flex items-center justify-center">
                 <Image
                   src="/cu-logo.png"
-                  alt="جامعة القاهرة"
+                  alt="الجامعة"
                   fill
                   sizes="64px"
                   className="object-cover"
@@ -19,10 +19,9 @@ export default function Navbar() {
                 />
               </div>
               <div className="text-gray-700 hidden lg:block">
-                <div className="text-xl font-bold">جامعة القاهرة</div>
+                <div className="text-xl font-bold">ارتقاء</div>
                 <div className="text-sm opacity-80">
-                  {" "}
-                  برامج التغذيه من جامعة القاهرة
+                  برامج التغذيه المعتمدة من الجامعة
                 </div>
               </div>
             </div>

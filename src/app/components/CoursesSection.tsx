@@ -34,8 +34,8 @@ export default function CoursesSection({
     selectedCategory === "الكل"
       ? courses.data.courses
       : courses.data.courses.filter(
-          (course) => course.categoryId === selectedCategory
-        );
+        (course) => course.categoryId === selectedCategory
+      );
 
   const loadCategories = async () => {
     try {
@@ -91,7 +91,7 @@ export default function CoursesSection({
             style={{ animationDelay: "0.4s" }}
           >
             أكثر من 30 برنامج تدريبي متخصص في مختلف المجالات مع شهادات معتمدة من
-            جامعة القاهرة وقابلة للتوثيق من وزارة الخارجيه
+            الجامعة وقابلة للتوثيق من وزارة الخارجيه
           </p>
 
           {/* Course Count */}
@@ -183,7 +183,7 @@ export default function CoursesSection({
           ) : (
             (true
               ? // showAllCourses
-                filteredCourses
+              filteredCourses
               : filteredCourses.slice(0, 9)
             ).map(
               (course: Course, index: number) =>

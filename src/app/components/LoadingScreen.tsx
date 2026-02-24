@@ -33,9 +33,8 @@ export default function LoadingScreen({
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-indigo-900 via-purple-900 to-blue-900 transition-opacity duration-500 ${
-        isComplete ? "opacity-0 pointer-events-none" : "opacity-100"
-      }`}
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-indigo-900 via-purple-900 to-blue-900 transition-opacity duration-500 ${isComplete ? "opacity-0 pointer-events-none" : "opacity-100"
+        }`}
     >
       {/* Background Animation */}
       <div className="absolute inset-0 overflow-hidden">
@@ -73,7 +72,7 @@ export default function LoadingScreen({
             جاري تحميل المحتوى
           </h2>
           <p className="text-indigo-200 arabic-text text-center">
-            برامج تدريبية معتمدة من جامعة القاهرة
+            برامج تدريبية معتمدة من الجامعة
           </p>
         </div>
 

@@ -17,7 +17,7 @@ export default function FeaturesSection() {
         </svg>
       ),
       title: "شهادة معتمدة",
-      description: "الشهادات والتدريب والمحتوى معتمدين من جامعة القاهرة",
+      description: "الشهادات والتدريب والمحتوى معتمدين من الجامعة",
     },
     {
       icon: (
@@ -96,7 +96,7 @@ export default function FeaturesSection() {
               </span>
             </span>
 
-            <span className="text-gray-900 block mb-2">من جامعة القاهرة؟</span>
+            <span className="text-gray-900 block mb-2">من الجامعة؟</span>
           </h2>
           <p
             className="text-xl text-center md:text-2xl text-gray-700 max-w-4xl mx-auto arabic-text leading-relaxed font-medium animate-fade-in-up"
