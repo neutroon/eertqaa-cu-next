@@ -19,9 +19,9 @@ export default function Navbar() {
                 />
               </div>
               <div className="text-gray-700 hidden lg:block">
-                <div className="text-xl font-bold">ارتقاء</div>
+                <div className="text-xl font-bold">البرامج المعتمدة</div>
                 <div className="text-sm opacity-80">
-                  برامج التغذيه المعتمدة من الجامعة
+                  بشهادات من الجامعة
                 </div>
               </div>
             </div>
