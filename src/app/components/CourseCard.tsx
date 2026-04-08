@@ -103,8 +103,7 @@ export default function CourseCard({
       {/* static  */}
       {/* description */}
       <p className="text-gray-600 mb-4 leading-relaxed arabic-text">
-        {course.description ||
-          "برنامج تدريبي متخصص مع شهادة معتمدة من الجامعة"}
+        {course.description || "برنامج تدريبي متخصص مع شهادة معتمدة من الجامعة"}
       </p>
 
       {/* Content Summary */}
@@ -170,7 +169,7 @@ export default function CourseCard({
                 {typeof feature === "string"
                   ? feature
                   : (feature as { name?: string; title?: string })?.name ||
-                  (feature as { name?: string; title?: string })?.title}
+                    (feature as { name?: string; title?: string })?.title}
                 {(!course.features ||
                   !Array.isArray(course.features) ||
                   course.features.length === 0) &&
@@ -196,14 +195,15 @@ export default function CourseCard({
         {course.availableSeats > 0 ? (
           <button
             onClick={() => onCourseSelect(course.title)}
-            className={`w-full py-3 px-6 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 ${selectedCourse === course.title
-              ? "bg-gradient-to-r from-green-600 to-emerald-600 text-white"
-              : "bg-gradient-to-r from-indigo-600 to-blue-600 text-white hover:from-indigo-700 hover:to-blue-700"
-              }`}
+            className={`w-full py-3 px-6 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 ${
+              selectedCourse === course.title
+                ? "bg-gradient-to-r from-green-600 to-emerald-600 text-white"
+                : "bg-gradient-to-r from-indigo-600 to-blue-600 text-white hover:from-indigo-700 hover:to-blue-700"
+            }`}
           >
             {selectedCourse === course.title
               ? "✓ تم اختيار هذا البرنامج"
-              : "سجل الآن مجاناً"}
+              : "سجل مجاناً"}
           </button>
         ) : (
           <button
