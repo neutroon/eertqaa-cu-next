@@ -153,10 +153,10 @@ export default function Footer() {
                   <p className="text-sm text-gray-400">الهاتف</p>
                   <a
                     dir="ltr"
-                    href="tel:+201123880088"
+                    href="tel:+201105509670"
                     className="font-semibold"
                   >
-                    +20 112 388 0088
+                    +20 110 550 9670
                   </a>
                 </div>
               </div>
