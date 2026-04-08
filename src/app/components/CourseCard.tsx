@@ -203,7 +203,7 @@ export default function CourseCard({
           >
             {selectedCourse === course.title
               ? "✓ تم اختيار هذا البرنامج"
-              : "سجل مجاناً"}
+              : "سجل الآن"}
           </button>
         ) : (
           <button
