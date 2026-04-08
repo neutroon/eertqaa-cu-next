@@ -31,12 +31,12 @@ export default function Footer() {
                 />
               </div> */}
               <h3 className="text-3xl font-bold bg-gradient-to-r from-indigo-900 to-purple-900 bg-clip-text text-transparent arabic-heading">
-                رواء
+                برامج الجامعة
               </h3>
             </div>
             <p className="text-gray-300 mb-6 arabic-text leading-relaxed text-lg">
-              برامج تدريبية معتمدة من الجامعة مع شهادات قابلة للتوثيق من
-              وزارة الخارجية
+              برامج تدريبية معتمدة من الجامعة مع شهادات قابلة للتوثيق من وزارة
+              الخارجية
             </p>
             <div className="flex space-x-4">
               <a
@@ -177,9 +177,7 @@ export default function Footer() {
                 </div>
                 <div>
                   <p className="text-sm text-gray-400">العنوان</p>
-                  <p className="font-semibold arabic-text">
-                    مصر
-                  </p>
+                  <p className="font-semibold arabic-text">مصر</p>
                 </div>
               </div>
             </div>
@@ -191,7 +189,7 @@ export default function Footer() {
           style={{ animationDelay: "0.6s" }}
         >
           <p className="text-gray-300 arabic-text text-center text-lg">
-            &copy; 2025 رواء جميع الحقوق محفوظة.
+            &copy; 2025 جميع الحقوق محفوظة.
             {/* تم التطوير بـ ❤️ لخدمة
             التعليم المتميز. */}
           </p>
