@@ -61,15 +61,20 @@ export default function Navbar() {
 
           {/* Navigation Links: Minimalist Luxury */}
           <div className="hidden lg:flex items-center gap-14">
-            {["الرئيسية", "البرامج", "من نحن", "تواصل معنا"].map((item, i) => (
+            {[
+              { name: "الرئيسية", href: "#" },
+              { name: "البرامج", href: "#courses" },
+              { name: "من نحن", href: "#about" },
+              { name: "تواصل معنا", href: "#register" },
+            ].map((item, i) => (
               <a
-                key={item}
-                href="#"
+                key={item.name}
+                href={item.href}
                 className={`text-sm font-black transition-all duration-700 tracking-wide relative group ${scrolled ? "text-slate-900" : "text-white/90"
                   }`}
                 style={{ transitionDelay: `${i * 50}ms` }}
               >
-                {item}
+                {item.name}
                 <span className={`absolute -bottom-2 left-0 w-0 h-1 transition-all group-hover:w-full rounded-full ${scrolled ? "bg-cu-blue" : "bg-white"
                   }`} />
               </a>
