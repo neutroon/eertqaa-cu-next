@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import RegistrationFormRefactored from "../components/RegistrationFormRefactored";
 import { Courses } from "../types";
 import { getCourses } from "../services/api";
-import LoadingScreen from "../components/LoadingScreen";
 
 export default function Registration() {
   const [courses, setCourses] = useState<Courses>({
@@ -32,15 +31,6 @@ export default function Registration() {
       });
   }, []);
 
-  if (isLoading) {
-    return (
-      <LoadingScreen
-        onLoadingComplete={() => {
-          setIsLoading(false);
-        }}
-      />
-    );
-  }
   return (
     <RegistrationFormRefactored
       courses={courses}
