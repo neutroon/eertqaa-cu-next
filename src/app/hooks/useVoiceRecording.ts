@@ -1,13 +1,5 @@
-import { useState, useRef, useCallback } from "react";
-
-export interface VoiceRecordingState {
-  isRecording: boolean;
-  audioBlob: Blob | null;
-  audioUrl: string | null;
-  recordingTime: number;
-  isPlaying: boolean;
-  recordingError: string | null;
-}
+import { useState, useRef, useCallback, useEffect } from "react";
+import { VoiceState } from "../types";
 
 export const useVoiceRecording = () => {
   const [voiceState, setVoiceState] = useState<VoiceRecordingState>({
@@ -20,7 +12,13 @@ export const useVoiceRecording = () => {
   });
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-  const audioRef = useRef<HTMLAudioElement>(new Audio());
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      audioRef.current = new Audio();
+    }
+  }, []);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const startTimer = useCallback(() => {
