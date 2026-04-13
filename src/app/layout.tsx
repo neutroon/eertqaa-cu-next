@@ -1,13 +1,33 @@
-import type { Metadata } from "next";
-import { Cairo, Amiri, Noto_Sans_Arabic } from "next/font/google";
-import "./globals.css";
+import { Cairo, Amiri, Noto_Sans_Arabic, Outfit, Inter, IBM_Plex_Sans_Arabic } from "next/font/google";
+import "./global.css";
 import Script from "next/script";
 import MetaPixel from "@/app/components/MetaPixel";
+import { Metadata } from "next";
 
 const cairo = Cairo({
   variable: "--font-cairo",
   subsets: ["arabic", "latin"],
   weight: ["300", "400", "500", "600", "700", "800", "900"],
+  display: "swap",
+});
+
+const ibmPlexArabic = IBM_Plex_Sans_Arabic({
+  variable: "--font-ibm-plex-arabic",
+  subsets: ["arabic"],
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
+});
+
+const outfit = Outfit({
+  variable: "--font-outfit",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  display: "swap",
+});
+
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
   display: "swap",
 });
 
@@ -26,9 +46,9 @@ const notoSansArabic = Noto_Sans_Arabic({
 });
 
 export const metadata: Metadata = {
-  title: "برامج تدريبية معتمدة من الجامعة",
+  title: "برامج جامعة القاهرة | Cairo University",
   description:
-    "انضم إلى برامجنا التدريبية المتخصصة واحصل على شهادة مختومة بختم النسر من الجامعة. برامج أونلاين عبر زوم أو حضورياً في الجامعة.",
+    "المنصة الرسمية لبرامج جامعة القاهرة التدريبية المعتمدة. احصل على شهادة موثقة ومختومة بختم النسر في تخصصات التغذية، الإدارة، وعلم النفس.",
 };
 
 export default function RootLayout({
