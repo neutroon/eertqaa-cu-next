@@ -71,7 +71,7 @@ export interface FormErrors {
 }
 
 // Voice recording states
-export interface VoiceRecordingState {
+export interface VoiceState {
   isRecording: boolean;
   audioBlob: Blob | null;
   audioUrl: string | null;
@@ -102,6 +102,8 @@ export interface RegistrationPayload {
   voiceMessage: string;
 }
 
+export type VoiceRecordingState = VoiceState; // Alias for backward compatibility if needed
+
 export interface RegistrationResponse {
   success: boolean;
   data: {
@@ -111,6 +113,11 @@ export interface RegistrationResponse {
 }
 
 // Component Props Types
+export interface CourseCardProps {
+  course: Course;
+  onSelect: (title: string) => void;
+}
+
 export interface RegistrationFormProps {
   courses: Courses;
   selectedCourse: string;
