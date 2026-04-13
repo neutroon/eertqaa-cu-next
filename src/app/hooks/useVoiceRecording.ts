@@ -2,7 +2,7 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import { VoiceState } from "../types";
 
 export const useVoiceRecording = () => {
-  const [voiceState, setVoiceState] = useState<VoiceRecordingState>({
+  const [voiceState, setVoiceState] = useState<VoiceState>({
     isRecording: false,
     audioBlob: null,
     audioUrl: null,
