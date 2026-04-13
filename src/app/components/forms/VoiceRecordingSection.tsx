@@ -1,21 +1,22 @@
-import React from "react";
-import { VoiceRecordingState, FormErrors } from "../../types";
+"use client";
+
+import { VoiceRecordingState } from "../../types";
 
 interface VoiceRecordingSectionProps {
+  // FIXED: was "VoiceState" which doesn't exist — correct type is VoiceRecordingState
   voiceState: VoiceRecordingState;
-  formErrors: FormErrors;
+  formErrors: Record<string, string>;
   isUploadingVoice: boolean;
-  startRecording: () => Promise<void>;
+  startRecording: () => void;
   stopRecording: () => void;
   playRecording: () => void;
   deleteRecording: () => void;
-  formatTime: (seconds: number) => string;
-  audioRef: React.RefObject<HTMLAudioElement>;
+  formatTime: (time: number) => string;
+  audioRef: React.RefObject<HTMLAudioElement | null>;
 }
 
 export default function VoiceRecordingSection({
   voiceState,
-  formErrors,
   isUploadingVoice,
   startRecording,
   stopRecording,
@@ -24,216 +25,102 @@ export default function VoiceRecordingSection({
   formatTime,
   audioRef,
 }: VoiceRecordingSectionProps) {
+
   return (
-    <div className="bg-gray-100 rounded-2xl p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-6 flex items-center">
-        <svg
-          className="w-5 h-5 text-indigo-600 ml-2"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-        >
-          <path
-            fillRule="evenodd"
-            d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z"
-            clipRule="evenodd"
-          />
-        </svg>
-        رسالة صوتية (اختياري)
-      </h3>
-      <div className="group">
-        <label className="block text-sm font-semibold text-gray-700 mb-3">
-          أرسل رسالة صوتية لتخبرنا عن توقعاتك أو استفساراتك
-        </label>
+    <div className="animate-fade-in [animation-delay:600ms]">
+      {/* Sub-header */}
+      <div className="flex items-center gap-4 sm:gap-6 mb-8 sm:mb-10 md:mb-12">
+        <span className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 arabic-heading whitespace-nowrap">
+          مذكرة صوتية (اختياري)
+        </span>
+        <div className="flex-1 h-px bg-slate-100" />
+      </div>
 
-        {(voiceState.recordingError || formErrors.voiceMessage) && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-            <div className="flex items-center">
-              <svg
-                className="w-5 h-5 text-red-600 ml-2"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <span className="text-red-800 text-sm">
-                {voiceState.recordingError || formErrors.voiceMessage}
-              </span>
-            </div>
-          </div>
-        )}
+      <div className="bg-slate-50/50 rounded-2xl sm:rounded-[2.5rem] md:rounded-[3rem] p-6 sm:p-8 md:p-12 border-2 border-slate-100 hover:border-cu-blue/20 transition-all duration-700 flex flex-col items-center">
+        <p className="text-xs sm:text-sm font-black text-slate-400 uppercase tracking-widest mb-6 sm:mb-8 md:mb-10 text-center">
+          يمكنك تسجيل استفسارك صوتياً للمراجعة الأكاديمية
+        </p>
 
-        {/* Voice Upload Progress */}
-        {isUploadingVoice && (
-          <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-            <div className="flex items-center">
-              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600 ml-2"></div>
-              <span className="text-blue-800 text-sm">
-                جاري رفع الرسالة الصوتية...
-              </span>
-            </div>
+        {/* Mic icon */}
+        <div className="mb-6 sm:mb-8 md:mb-10 relative">
+          {voiceState.isRecording && (
+            <div className="absolute inset-0 bg-cu-red/20 blur-2xl sm:blur-3xl rounded-full animate-pulse scale-150" />
+          )}
+          <div className={`w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full flex items-center justify-center transition-all duration-700 shadow-xl ${voiceState.isRecording
+              ? "bg-cu-red text-white scale-110"
+              : "bg-white text-slate-400 border border-slate-100"
+            }`}>
+            <svg className={`w-8 h-8 sm:w-11 sm:h-11 md:w-13 md:h-13 ${voiceState.isRecording ? "animate-pulse" : ""}`} fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clipRule="evenodd" />
+            </svg>
           </div>
-        )}
+        </div>
 
         {!voiceState.audioBlob ? (
-          <div className="space-y-4">
-            {!voiceState.isRecording ? (
-              <button
-                type="button"
-                onClick={startRecording}
-                className="w-full flex items-center justify-center px-6 py-4 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl hover:from-red-600 hover:to-red-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-              >
-                <svg
-                  className="w-6 h-6 ml-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                ابدأ التسجيل
-              </button>
-            ) : (
-              <div className="space-y-4">
-                <div className="flex items-center justify-center space-x-4">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
-                    <span className="text-red-600 font-semibold">
-                      جاري التسجيل...
-                    </span>
-                  </div>
-                  <div className="text-lg font-mono font-bold text-gray-900">
-                    {formatTime(voiceState.recordingTime)}
-                  </div>
-                </div>
-
-                <div className="flex space-x-3">
-                  <button
-                    type="button"
-                    onClick={stopRecording}
-                    className="flex-1 flex items-center justify-center px-4 py-3 bg-gray-600 text-white rounded-xl hover:bg-gray-700 transition-all duration-300"
-                  >
-                    <svg
-                      className="w-5 h-5 ml-2"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 00-1 1v4a1 1 0 001 1h4a1 1 0 001-1V8a1 1 0 00-1-1H8z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    إيقاف التسجيل
-                  </button>
-                </div>
-
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-                  <p className="text-yellow-800 text-sm text-center">
-                    💡 نصيحة: تحدث بوضوح واذكر اسمك والبرامج المطلوبة
-                  </p>
-                </div>
-              </div>
-            )}
+          <div className="text-center space-y-3 sm:space-y-4 w-full">
+            <h4 className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-950 arabic-text-premium">
+              {voiceState.isRecording ? "جاري التسجيل الآن..." : "اضغط للبدء بالتسجيل"}
+            </h4>
+            <p className="text-base sm:text-lg md:text-xl text-slate-400 font-medium arabic-text-premium">
+              {voiceState.isRecording
+                ? formatTime(voiceState.recordingTime)
+                : "سجل رسالتك لضمان دقة معالجة طلبك."}
+            </p>
+            <button
+              type="button"
+              onClick={voiceState.isRecording ? stopRecording : startRecording}
+              disabled={isUploadingVoice}
+              className={`mt-4 sm:mt-6 btn-boutique py-3 sm:py-5 md:py-6 px-8 sm:px-12 md:px-14 text-base sm:text-lg md:text-xl shadow-xl ${voiceState.isRecording
+                  ? "btn-boutique-red"
+                  : "bg-slate-950 text-white border-slate-950 hover:bg-slate-800"
+                }`}
+            >
+              {voiceState.isRecording ? "إيقاف وحفظ" : "بدء التسجيل الصوتي"}
+            </button>
           </div>
         ) : (
-          <div className="space-y-4">
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center">
-                  <svg
-                    className="w-5 h-5 text-green-600 ml-2"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  <span className="text-green-800 font-semibold">
-                    تم التسجيل بنجاح!
-                  </span>
-                </div>
-                <span className="text-green-700 font-mono text-sm">
-                  {formatTime(voiceState.recordingTime)}
-                </span>
+          <div className="space-y-5 sm:space-y-7 w-full max-w-xs sm:max-w-sm md:max-w-lg mx-auto">
+            {/* Waveform player */}
+            <div className="flex items-center justify-between gap-3 sm:gap-5 bg-white p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-[2rem] border-2 border-slate-100 shadow-lg">
+              <div className="text-left font-mono font-bold text-cu-blue text-sm sm:text-base">
+                {formatTime(voiceState.recordingTime)}
               </div>
-
-              <div className="flex space-x-2">
-                <button
-                  type="button"
-                  onClick={playRecording}
-                  className="flex-1 flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-300"
-                >
-                  {voiceState.isPlaying ? (
-                    <>
-                      <svg
-                        className="w-4 h-4 ml-2"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      إيقاف
-                    </>
-                  ) : (
-                    <>
-                      <svg
-                        className="w-4 h-4 ml-2"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      تشغيل
-                    </>
-                  )}
-                </button>
-
-                <button
-                  type="button"
-                  onClick={deleteRecording}
-                  className="flex items-center justify-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all duration-300"
-                >
-                  <svg
-                    className="w-4 h-4 ml-2"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  حذف
-                </button>
+              <div className="flex-1 flex items-center gap-1">
+                {Array.from({ length: 10 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="flex-1 h-2 sm:h-3 bg-slate-100 rounded-full animate-pulse"
+                    style={{ animationDelay: `${i * 100}ms` }}
+                  />
+                ))}
               </div>
+              <button
+                type="button"
+                onClick={playRecording}
+                className="w-11 h-11 sm:w-13 sm:h-13 md:w-14 md:h-14 rounded-full bg-cu-blue text-white flex items-center justify-center hover:scale-110 active:scale-95 transition-all shadow-md shrink-0"
+              >
+                <svg className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="flex justify-center">
+              <button
+                type="button"
+                onClick={deleteRecording}
+                className="text-slate-400 font-bold hover:text-cu-red transition-all flex items-center gap-2 sm:gap-3 text-sm sm:text-base"
+              >
+                <svg className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+                مسح التسجيل
+              </button>
             </div>
           </div>
         )}
 
-        <audio ref={audioRef} className="hidden" />
-
-        <div className="mt-3 text-xs text-gray-500">
-          💡 الرسالة الصوتية ستساعدنا في فهم احتياجاتك بشكل أفضل
-        </div>
+        <audio ref={audioRef} hidden />
       </div>
     </div>
   );
