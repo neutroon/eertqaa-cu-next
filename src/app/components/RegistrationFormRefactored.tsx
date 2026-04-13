@@ -221,7 +221,7 @@ export default function RegistrationFormRefactored({
                 clearFieldError={clearFieldError}
               />
 
-              <VoiceRecordingSection
+              {/* <VoiceRecordingSection
                 voiceState={voiceState}
                 formErrors={formState.formErrors}
                 isUploadingVoice={formState.isUploadingVoice}
@@ -231,7 +231,7 @@ export default function RegistrationFormRefactored({
                 deleteRecording={deleteRecording}
                 formatTime={formatTime}
                 audioRef={audioRef}
-              />
+              /> */}
 
               <AdditionalMessageSection
                 register={register}
