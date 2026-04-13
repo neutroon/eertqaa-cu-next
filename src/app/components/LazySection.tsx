@@ -44,9 +44,8 @@ export default function LazySection({
   return (
     <div
       ref={elementRef}
-      className={`${className} ${
-        isVisible ? "animate-fade-in-up" : "opacity-0"
-      }`}
+      className={`${className} ${isVisible ? "animate-fade-in-up" : "opacity-0"
+        }`}
     >
       {isVisible ? children : <div className="min-h-[200px]" />}
     </div>
