@@ -5,7 +5,10 @@ import { API_CONFIG } from "../utils/constants";
 export interface RegistrationPayload {
   name: string;
   phone: string;
-  selectedProgram: string;
+  selectedProgram: {
+    name: string;
+    courseId: string;
+  };
   learningPreference: string;
   message: string;
   voiceMessage: string;
