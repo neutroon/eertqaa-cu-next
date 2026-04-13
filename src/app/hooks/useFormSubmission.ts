@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
-import { FormErrors, FormState } from "../types";
+import { FormState } from "../types";
 import { uploadVoiceMessage } from "../services/voiceService";
-import { submitRegistration } from "../services/api";
+import { submitRegistration, RegistrationPayload } from "../services/api";
 
 export const useFormSubmission = () => {
   const [formState, setFormState] = useState<FormState>({
@@ -43,27 +43,22 @@ export const useFormSubmission = () => {
       setFormState((prev) => ({ ...prev, isSubmitting: true }));
 
       try {
-        // Get form values from React Hook Form data
-        const firstName = formData.firstName?.trim() || "";
+        // Get form values from React Hook Form data (Mapped to API specs)
+        const name = formData.firstName?.trim() || "";
         const phone = formData.phone?.trim() || "";
         const course = formData.course || null;
         const preferredMethod = formData.preferredMethod || "";
         const message = formData.message?.trim() || "";
 
-        // Basic validation - React Hook Form handles most validation
-        if (!firstName || !phone) {
-          setFormState((prev) => ({ ...prev, isSubmitting: false }));
-          return;
-        }
-
-        // Validate course is selected
-        if (!course || !course.name || !course.courseId) {
-          setFormState((prev) => ({
-            ...prev,
-            formErrors: {
-              course: "يرجى اختيار البرنامج التدريبي",
+        // Basic validation (Name and Phone are strictly required)
+        if (!name || !phone) {
+          setFormState((prev) => ({ 
+            ...prev, 
+            formErrors: { 
+              ...(!name && { firstName: "الاسم مطلوب" }),
+              ...(!phone && { phone: "رقم الهاتف مطلوب" }),
             },
-            isSubmitting: false,
+            isSubmitting: false 
           }));
           return;
         }
@@ -89,16 +84,19 @@ export const useFormSubmission = () => {
           }
         }
 
-        // Prepare API payload
-        const payload = {
-          name: firstName,
+        // Prepare API payload (Strictly matching Official Specs)
+        const payload: RegistrationPayload = {
+          name: name,
           phone: phone,
-          selectedProgram: course,
-          learningPreference: preferredMethod
-            ? preferredMethod === "online"
-              ? "أونلاين عبر زوم"
-              : "حضورياً في الجامعة"
-            : "", // Empty string if no preference selected
+          selectedProgram: {
+            name: course?.name || "",
+            courseId: course?.courseId || ""
+          },
+          learningPreference: preferredMethod === "online" 
+            ? "أونلاين عبر زوم" 
+            : preferredMethod === "presence" 
+            ? "حضورياً في الجامعة" 
+            : "",
           message: message,
           voiceMessage: voiceMessageUrl,
         };
@@ -110,8 +108,8 @@ export const useFormSubmission = () => {
         setFormState((prev) => ({
           ...prev,
           submitSuccess: true,
-          submitMessage: `تم إرسال طلب التسجيل بنجاح! رقم الطلب: ${
-            result.data?.id?.substring(0, 8) || "غير محدد"
+          submitMessage: `تم استلام طلبكم بنجاح. رقم المرجعي: ${
+            result.data?.id?.substring(0, 8) || "CU-LEAD"
           }`,
         }));
 
@@ -123,16 +121,6 @@ export const useFormSubmission = () => {
           onSuccess();
         }
 
-        // Scroll to success message
-        setTimeout(() => {
-          const successElement = document.getElementById("success-message");
-          if (successElement) {
-            successElement.scrollIntoView({
-              behavior: "smooth",
-              block: "center",
-            });
-          }
-        }, 100);
       } catch (error) {
         console.error("Form submission error:", error);
         setFormState((prev) => ({
