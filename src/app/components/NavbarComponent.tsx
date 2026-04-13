@@ -1,77 +1,76 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Image from "next/image";
 
 export default function Navbar() {
-  return (
-    <>
-      {/* Enhanced Header */}
-      <header className="  glass-effect border-b border-white/20 backdrop-blur-xl">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex justify-center items-center flex-wrap md:flex-nowrap gap-6">
-            <div className="flex items-center space-x-4 backdrop-blur-sm sm:border-2 border-white rounded-2xl px-2">
-              <div className="relative w-16 h-20 bg-opacity-20 backdrop-blur-sm sm:border-e-2 border-white flex items-center justify-center">
-                <Image
-                  src="/cu-logo.png"
-                  alt="الجامعة"
-                  fill
-                  sizes="64px"
-                  className="object-cover"
-                  quality={10}
-                />
-              </div>
-              <div className="text-gray-700 hidden lg:block">
-                <div className="text-xl font-bold">البرامج المعتمدة</div>
-                <div className="text-sm opacity-80">
-                  بشهادات من الجامعة
-                </div>
-              </div>
-            </div>
+  const [scrolled, setScrolled] = useState(false);
 
-            <nav className="flex gap-2 order-3 md:order-2 w-full ms-auto md:w-auto justify-around">
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <nav
+      className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-700 ${scrolled ? "pt-4" : "pt-8"
+        }`}
+    >
+      <div className="max-w-7xl mx-auto px-6">
+        <div
+          className={`flex items-center justify-between transition-all duration-700 ${scrolled
+              ? "glass-spatial rounded-[3rem] px-10 py-4 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.06)] border-white/60"
+              : "bg-transparent py-2 border-transparent"
+            }`}
+        >
+          {/* Brand Logo: Clean & High Contrast */}
+          <div className="flex items-center gap-6">
+            <Image
+              src="/cu-logo.png"
+              alt="Cairo University Logo"
+              width={scrolled ? 50 : 65}
+              height={scrolled ? 50 : 65}
+              className="object-contain transition-all duration-700 hover:scale-110 drop-shadow-md"
+            />
+            <div className={`flex flex-col border-l-2 pl-6 transition-all duration-700 ${scrolled ? "border-slate-200" : "border-slate-300"
+              }`}>
+              <span className="text-xl font-black text-slate-950 font-family-outfit tracking-tighter">برامج جامعة القاهرة</span>
+              <span className={`text-[10px] font-black tracking-[0.3em] uppercase ${scrolled ? "text-cu-blue" : "text-slate-500"
+                }`}>Cairo University</span>
+            </div>
+          </div>
+
+          {/* Desktop Navigation: Minimalist Pill */}
+          <div className="hidden lg:flex items-center gap-12">
+            {["الرئيسية", "البرامج", "من نحن", "تواصل معنا"].map((item) => (
               <a
-                href="#courses"
-                className="relative px-2 sm:px-4 py-2 text-gray-700 hover:text-indigo-600 transition-all duration-300 font-semibold group arabic-text"
+                key={item}
+                href="#"
+                className="text-sm font-black text-slate-900 transition-all hover:text-cu-blue tracking-wide relative group"
               >
-                <span className="relative z-10">البرامج</span>
-                <div className="absolute inset-0 bg-indigo-50 rounded-lg scale-0 group-hover:scale-100 transition-transform duration-300"></div>
+                {item}
+                <span className="absolute -bottom-2 left-0 w-0 h-1 bg-cu-red transition-all group-hover:w-full rounded-full" />
               </a>
-              <a
-                href="#about"
-                className="relative px-2 sm:px-4 py-2 text-gray-700 hover:text-indigo-600 transition-all duration-300 font-semibold group arabic-text"
-              >
-                <span className="relative z-10 whitespace-nowrap">
-                  عن البرنامج
-                </span>
-                <div className="absolute inset-0 bg-indigo-50 rounded-lg scale-0 group-hover:scale-100 transition-transform duration-300"></div>
-              </a>
-              <a
-                href="#features"
-                className="relative px-2 sm:px-4 py-2 text-gray-700 hover:text-indigo-600 transition-all duration-300 font-semibold group arabic-text"
-              >
-                <span className="relative z-10">المميزات</span>
-                <div className="absolute inset-0 bg-indigo-50 rounded-lg scale-0 group-hover:scale-100 transition-transform duration-300"></div>
-              </a>
-              <a
-                href="#register"
-                className="premium-button bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-2 sm:px-4 py-2 text-sm font-bold arabic-button"
-              >
-                <span className="relative z-10">التسجيل</span>
-              </a>
-            </nav>
-            {/* <div className="rounded-xl flex items-center order-2 md:order-3 justify-center group-hover:scale-110 transition-transform">
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-900 to-purple-900 bg-clip-text text-transparent arabic-heading">
-                رواء
-              </h1>
-              <Image
-                src="/logo.svg"
-                alt="رواء"
-                width={100}
-                height={100}
-                className=" object-cover -ms-2.5 w-12 h-10"
-              />
-            </div> */}
+            ))}
+          </div>
+
+          {/* High-End CTA Button */}
+          <div className="flex items-center gap-6">
+            <a
+              href="#register"
+              className={`btn-boutique py-3.5 px-8 text-sm tracking-tight transition-all ${scrolled
+                  ? "btn-boutique-red"
+                  : "bg-slate-900 text-white border-slate-900 hover:bg-slate-800"
+                }`}
+            >
+              انضم الآن
+            </a>
           </div>
         </div>
-      </header>
-    </>
+      </div>
+    </nav>
   );
 }
