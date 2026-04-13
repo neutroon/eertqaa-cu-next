@@ -57,13 +57,13 @@ export default function PersonalInfoSection({
 
         {/* Phone */}
         <div className="relative group">
-          <label className={label}>رقم الهاتف (واتساب)</label>
+          <label className={label}>رقم الهاتف</label>
           <Controller
             name="phone"
             control={control}
-            rules={{ 
+            rules={{
               required: "رقم الهاتف مطلوب",
-              validate: (value) => 
+              validate: (value) =>
                 !value || isValidPhoneNumber(value) || "يرجى إدخال رقم هاتف صحيح"
             }}
             render={({ field: { onChange, value } }) => (
