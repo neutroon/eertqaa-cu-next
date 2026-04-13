@@ -14,7 +14,6 @@ export default function CoursesSection({
   selectedCourse,
   onCourseSelect,
 }: CoursesSectionProps) {
-  const [showAllCourses, setShowAllCourses] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("الكل");
   const [categories, setCategories] = useState<Categories>({
     success: true,
@@ -24,203 +23,136 @@ export default function CoursesSection({
     data: [],
   });
   const [loading, setLoading] = useState(false);
-  const handleCategoryFilter = (category: string) => {
-    setSelectedCategory(category);
-    setShowAllCourses(false);
-  };
 
-  // Filter courses based on selected category
+  useEffect(() => {
+    const loadCategories = async () => {
+      try {
+        setLoading(true);
+        const categoriesData = await getCategories();
+        setCategories(categoriesData);
+      } catch (error) {
+        console.error("Error loading categories:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadCategories();
+  }, []);
+
   const filteredCourses =
     selectedCategory === "الكل"
-      ? courses.data.courses
+      ? [...courses.data.courses].sort((a, b) => {
+        const priorityCategories = ["برامج التغذية", "البرامج المعتمدة من الجامعة"];
+        const aPriority = priorityCategories.includes(a.category?.name || "") ? 1 : 0;
+        const bPriority = priorityCategories.includes(b.category?.name || "") ? 1 : 0;
+        return bPriority - aPriority;
+      })
       : courses.data.courses.filter(
         (course) => course.categoryId === selectedCategory
       );
 
-  const loadCategories = async () => {
-    try {
-      setLoading(true);
-      const categories = await getCategories();
-      setCategories(categories);
-    } catch (error) {
-      console.error("Error loading categories:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    loadCategories();
-  }, []);
   return (
     <section
       id="courses"
-      className="rounded-t-4xl py-32 bg-gradient-to-br from-slate-50 via-indigo-50 to-purple-50 relative overflow-hidden"
+      className="section-padding bg-white relative overflow-hidden py-16 sm:py-20 md:py-24 lg:py-32"
     >
-      {/* Background Decorations */}
-      <div className="absolute top-20 right-20 w-64 h-64 bg-gradient-to-br from-indigo-200 to-purple-200 rounded-full mix-blend-multiply filter blur-2xl opacity-30 animate-pulse"></div>
-      <div
-        className="absolute bottom-20 left-20 w-80 h-80 bg-gradient-to-tr from-blue-200 to-cyan-200 rounded-full mix-blend-multiply filter blur-2xl opacity-30 animate-pulse"
-        style={{ animationDelay: "2s" }}
-      ></div>
+      {/* Heritage Accents — FIXED: bg-gradient-to-r */}
+      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
+      <div className="absolute top-12 right-0 sm:right-12 w-48 h-48 sm:w-96 sm:h-96 bg-cu-gold/5 rounded-full blur-[80px] sm:blur-[100px]" />
+      <div className="absolute bottom-12 left-0 sm:left-12 w-48 h-48 sm:w-96 sm:h-96 bg-cu-blue/5 rounded-full blur-[80px] sm:blur-[100px]" />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-24">
-          <div className="inline-flex items-center px-6 py-3 rounded-full glass-effect professional-shadow text-indigo-800 text-sm font-semibold mb-8 border border-indigo-200 animate-fade-in-up">
-            <div className="w-2 h-2 bg-green-500 rounded-full mr-3 animate-pulse"></div>
-            <svg
-              className="w-5 h-5 ml-2 text-indigo-600"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            برامج معتمدة ومتخصصة
-          </div>
-          <h2
-            className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 arabic-heading animate-fade-in-up"
-            style={{ animationDelay: "0.2s" }}
-          >
-            <span className="text-gray-900 block mb-2">برامجنا</span>
-            <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 bg-clip-text text-transparent">
-              التدريبية
-            </span>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+        {/* Section Header */}
+        <div className="max-w-5xl mx-auto text-center mb-12 sm:mb-16 md:mb-20 lg:mb-28 flex flex-col items-center animate-fade-in-up">
+          <div className="w-16 sm:w-24 h-px bg-cu-gold mb-6 sm:mb-10 shadow-[0_0_10px_rgba(255,242,0,0.5)]" />
+
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl font-bold text-slate-950 mb-6 sm:mb-10 leading-tight arabic-heading">
+            صرح المعرفة{" "}
+            <span className="text-cu-blue">والريادة الأكاديمية</span>
           </h2>
-          <p
-            className="text-center text-xl md:text-2xl text-gray-700 mb-16 max-w-4xl mx-auto arabic-text leading-relaxed font-medium animate-fade-in-up"
-            style={{ animationDelay: "0.4s" }}
-          >
-            أكثر من 30 برنامج تدريبي متخصص في مختلف المجالات مع شهادات معتمدة من
-            الجامعة وقابلة للتوثيق من وزارة الخارجيه
+
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl text-slate-600 font-medium arabic-text-premium max-w-xs sm:max-w-xl md:max-w-2xl lg:max-w-3xl border-r-4 border-cu-red pr-4 sm:pr-6 md:pr-10 text-right">
+            اكتشف برامجنا التعليمية التي تجمع بين عراقة جامعة القاهرة وأحدث
+            المنهجيات العالمية، مصممة خصيصاً لتشكيل قادة المستقبل.
           </p>
+        </div>
 
-          {/* Course Count */}
-          {/* <div className="text-center mb-6">
-            <p className="text-lg text-gray-600 arabic-text">
-              عرض {filteredCourses.length} من أصل {courses.data.courses.length}{" "}
-              برامج تدريبية
-              {selectedCategory !== "الكل" &&
-                ` في فئة ${
-                  categories.data.find(
-                    (category) => category.id === selectedCategory
-                  )?.name
+        {/* Category Filter Tabs */}
+        {/* On mobile: horizontally scrollable row; on lg+: centered wrap */}
+        <div className="mb-10 sm:mb-14 md:mb-16 lg:mb-20 border-b border-slate-100 pb-0 animate-fade-in">
+          <div className="flex lg:flex-wrap lg:justify-center gap-2 sm:gap-4 lg:gap-8 overflow-x-auto lg:overflow-visible pb-0 scrollbar-none snap-x snap-mandatory px-1">
+            <button
+              onClick={() => setSelectedCategory("الكل")}
+              className={`relative shrink-0 snap-start py-3 sm:py-4 px-3 sm:px-2 text-base sm:text-lg lg:text-xl font-bold transition-all whitespace-nowrap ${selectedCategory === "الكل"
+                ? "text-cu-blue"
+                : "text-slate-400 hover:text-slate-600"
                 }`}
-            </p>
-          </div> */}
-
-          {/* Category Filter */}
-          {/* <div className="flex flex-wrap justify-center gap-3 mb-12">
-            <button
-              onClick={() => handleCategoryFilter("الكل")}
-              className={`px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 border shadow-sm hover:shadow-md transform hover:-translate-y-0.5 ${
-                selectedCategory === "الكل"
-                  ? "bg-indigo-600 text-white border-indigo-600"
-                  : "bg-white text-gray-700 hover:bg-indigo-600 hover:text-white border-gray-200 hover:border-indigo-600"
-              }`}
             >
-              الكل ({courses.data.courses.length})
+              جميع البرامج
+              {selectedCategory === "الكل" && (
+                <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-cu-blue rounded-t-full shadow-[0_-4px_10px_rgba(46,49,146,0.3)] animate-fadeIn" />
+              )}
             </button>
-            {categories.data.map((category: Category) => {
-              const categoryCount = courses.data.courses.filter(
-                (course) => course.categoryId === category.id
-              ).length;
 
-              if (categoryCount === 0) {
-                return null;
-              }
-              if (category.courses.length === 0) {
-                return null;
-              }
-              return (
-                <button
-                  key={category.id}
-                  onClick={() => handleCategoryFilter(category.id)}
-                  className={`px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 border shadow-sm hover:shadow-md transform hover:-translate-y-0.5 ${
-                    selectedCategory === category.id
-                      ? "bg-indigo-600 text-white border-indigo-600"
-                      : "bg-white text-gray-700 hover:bg-indigo-600 hover:text-white border-gray-200 hover:border-indigo-600"
-                  }`}
-                >
-                  {category.name} ({categoryCount})
-                </button>
-              );
-            })}
-          </div> */}
+            {!loading &&
+              [...categories.data]
+                .filter((category: Category) => category.name !== "برامج التغذية")
+                .sort((a, b) => {
+                  const priorityNames = ["البرامج المعتمدة من الجامعة"];
+                  const aIsPriority = priorityNames.includes(a.name);
+                  const bIsPriority = priorityNames.includes(b.name);
+                  if (aIsPriority && !bIsPriority) return -1;
+                  if (!aIsPriority && bIsPriority) return 1;
+                  return 0;
+                })
+                .map((category: Category) => (
+                  <button
+                    key={category.id}
+                    onClick={() => setSelectedCategory(category.id)}
+                    className={`relative shrink-0 snap-start py-3 sm:py-4 px-3 sm:px-2 text-base sm:text-lg lg:text-xl font-bold transition-all whitespace-nowrap ${selectedCategory === category.id
+                      ? "text-cu-blue"
+                      : "text-slate-400 hover:text-slate-600"
+                      }`}
+                  >
+                    {category.name === "البرامج المعتمدة من الجامعة" ? "برامج التغذية" : category.name}
+                    {selectedCategory === category.id && (
+                      <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-cu-blue rounded-t-full shadow-[0_-4px_10px_rgba(46,49,146,0.3)] animate-fadeIn" />
+                    )}
+                  </button>
+                ))}
+          </div>
+          {/* Bottom border sits below the scroll area */}
+          <div className="h-px bg-slate-100 mt-0" />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+        {/* Course Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 xl:gap-12">
           {loading ? (
-            <div className="col-span-full text-center py-12">
-              <div className="text-gray-500 text-lg mb-4">
-                جاري تحميل البرامج...
-              </div>
-            </div>
-          ) : filteredCourses.length === 0 ? (
-            <div className="col-span-full text-center py-12">
-              <div className="text-gray-500 text-lg mb-4">
-                <svg
-                  className="w-16 h-16 mx-auto mb-4 text-gray-300"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={1}
-                    d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.29-1.009-5.824-2.709"
-                  />
-                </svg>
-                لا توجد برامج في هذه الفئة حالياً
-              </div>
-              <button
-                onClick={() => handleCategoryFilter("الكل")}
-                className="text-indigo-600 hover:text-indigo-800 font-semibold"
-              >
-                عرض جميع البرامج
-              </button>
-            </div>
+            Array.from({ length: 6 }).map((_, i) => (
+              <div
+                key={i}
+                className="h-[400px] sm:h-[500px] lg:h-[600px] rounded-2xl sm:rounded-[2rem] bg-slate-50 border border-slate-100 animate-pulse"
+              />
+            ))
+          ) : filteredCourses.length > 0 ? (
+            filteredCourses.filter((course: Course) => course.availableSeats > 0).map((course: Course, index: number) => (
+              <CourseCard
+                key={course.id}
+                course={course}
+                index={index}
+                selectedCourse={selectedCourse}
+                onCourseSelect={onCourseSelect}
+              />
+            ))
           ) : (
-            (true
-              ? // showAllCourses
-              filteredCourses
-              : filteredCourses.slice(0, 9)
-            ).map(
-              (course: Course, index: number) =>
-                course.availableSeats > 0 && (
-                  <CourseCard
-                    key={course.id}
-                    course={course}
-                    index={index}
-                    selectedCourse={selectedCourse}
-                    onCourseSelect={onCourseSelect}
-                  />
-                )
-            )
+            <div className="col-span-full text-center py-20 sm:py-32 md:py-48 bg-slate-50 rounded-2xl sm:rounded-[3rem] border-2 border-dashed border-slate-200">
+              <p className="text-xl sm:text-2xl md:text-3xl text-slate-400 font-bold arabic-heading px-4">
+                لا توجد برامج متاحة في هذا التصنيف حالياً.
+              </p>
+            </div>
           )}
         </div>
-        {/* 
-        <div className="text-center">
-          {filteredCourses.length > 9 && (
-            <button
-              id="all-courses"
-              onClick={() => {
-                setShowAllCourses(!showAllCourses);
-                if (showAllCourses) {
-                  window.scroll({
-                    top: 2400,
-                    behavior: "smooth",
-                  });
-                }
-              }}
-              className="bg-white text-indigo-600 px-8 py-3 rounded-lg font-semibold hover:bg-indigo-50 transition-colors border-2 border-indigo-600"
-            >
-              {showAllCourses
-                ? "إخفاء البرامج"
-                : `عرض جميع البرامج (${filteredCourses.length} برنامج)`}
-            </button>
-          )}
-        </div> */}
       </div>
     </section>
   );
