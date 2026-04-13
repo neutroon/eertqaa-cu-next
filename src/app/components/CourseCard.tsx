@@ -13,206 +13,132 @@ export default function CourseCard({
   selectedCourse,
   onCourseSelect,
 }: CourseCardProps) {
+  const isSelected = selectedCourse === course.title;
+
   return (
     <div
-      key={course.id}
-      className="group professional-card p-8 hover:border-indigo-300 transform hover:-translate-y-3 hover:rotate-1 transition-all duration-500 animate-fade-in-up border-2 border-transparent hover:border-gradient-to-br from-indigo-200 to-purple-200"
-      style={{ animationDelay: `${index * 150}ms` }}
+      className={`group relative min-h-[340px] sm:min-h-[380px] md:min-h-[420px] lg:min-h-[460px] rounded-2xl sm:rounded-[1.5rem] overflow-hidden bg-slate-950 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] border transition-all duration-700 cursor-pointer
+        ${isSelected
+          ? "border-cu-gold -translate-y-2 shadow-[0_40px_80px_-15px_rgba(46,49,146,0.25)]"
+          : "border-slate-800 hover:-translate-y-3 hover:shadow-[0_50px_100px_-20px_rgba(0,0,0,0.2)]"
+        }`}
+      onClick={() => onCourseSelect(course.title)}
+      style={{ animationDelay: `${index * 80}ms` }}
     >
-      {/* Enhanced Course Header */}
-      <div className="flex justify-between items-start mb-8">
-        <div className="flex items-center space-x-3">
-          <div className="relative">
-            {/* category */}
-            <span className="px-4 py-2 bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-700 text-sm font-semibold rounded-full border border-indigo-200 group-hover:scale-105 transition-transform">
-              {course.category.name}
+      {/* Background: subtle grid pattern for texture */}
+      <div className="absolute inset-0 z-0 opacity-20"
+        style={{
+          backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.08) 1px, transparent 0)`,
+          backgroundSize: "24px 24px",
+        }}
+      />
+
+      {/* Scrims — FIXED: bg-gradient-to-t */}
+      <div className="absolute inset-0 z-0 bg-linear-to-t from-slate-950/95 via-slate-950/40 to-slate-900/60" />
+      <div className="absolute inset-x-0 bottom-0 h-2/3 z-0 bg-linea-to-t from-slate-950 via-slate-950/60 to-transparent" />
+
+      {/* Glow accent — blue on hover, gold when selected */}
+      <div className={`absolute top-0 left-0 right-0 h-px transition-all duration-700
+        ${isSelected
+          ? "bg-linear-to-r from-transparent via-cu-gold to-transparent"
+          : "bg-linear-to-r from-transparent via-cu-blue/40 to-transparent opacity-0 group-hover:opacity-100"
+        }`}
+      />
+
+      {/* Heritage Certificate Frame */}
+      <div className={`absolute inset-3 sm:inset-5 border rounded-xl sm:rounded-[1rem] pointer-events-none z-10 transition-all duration-700
+        ${isSelected ? "border-cu-gold/40" : "border-white/5 group-hover:border-cu-gold/20"}`}
+      >
+        <div className={`absolute top-0 left-0 w-5 h-5 sm:w-7 sm:h-7 border-t-2 border-l-2 rounded-tl-lg transition-all duration-500
+          ${isSelected ? "border-cu-gold" : "border-transparent group-hover:border-cu-gold/60"}`}
+        />
+        <div className={`absolute bottom-0 right-0 w-5 h-5 sm:w-7 sm:h-7 border-b-2 border-r-2 rounded-br-lg transition-all duration-500
+          ${isSelected ? "border-cu-gold" : "border-transparent group-hover:border-cu-gold/60"}`}
+        />
+      </div>
+
+      {/* Card Body */}
+      <div className="absolute inset-0 z-20 p-5 sm:p-7 md:p-8 lg:p-10 flex flex-col justify-between">
+
+        {/* Top: Seats badge */}
+        <div className="flex justify-end">
+          {course.availableSeats <= 10 && course.availableSeats > 0 && (
+            <span className="text-[10px] sm:text-xs font-black tracking-widest uppercase bg-cu-red/90 text-white px-2 sm:px-3 py-1 rounded-full">
+              آخر {course.availableSeats} مقاعد
             </span>
-            <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-          </div>
+          )}
+          {course.availableSeats === 0 && (
+            <span className="text-[10px] sm:text-xs font-black tracking-widest uppercase bg-slate-700 text-white/60 px-2 sm:px-3 py-1 rounded-full">
+              مكتمل
+            </span>
+          )}
         </div>
-        <button className="text-gray-400 hover:text-red-500 transition-all duration-300 p-3 hover:bg-red-50 rounded-xl group-hover:scale-110 transform">
-          <svg
-            className="w-6 h-6 hover:fill-current"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-            />
-          </svg>
-        </button>
-      </div>
 
-      {/* course name */}
-      <h3 className="text-2xl font-bold text-gray-900 mb-6 group-hover:text-indigo-600 transition-colors arabic-heading leading-tight">
-        {course.title}
-      </h3>
+        {/* Bottom Content */}
+        <div className="flex flex-col gap-3 sm:gap-4">
 
-      {/* Course Info */}
-      {/* available seats */}
-      {/* duration */}
-      <div className="flex items-center justify-between mb-4">
-        {course.availableSeats > 0 ? (
-          <div className="flex items-center text-green-600 text-sm">
-            <svg
-              className="w-4 h-4 ml-2"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path
-                fillRule="evenodd"
-                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                clipRule="evenodd"
-              />
-            </svg>
-            <span className="font-semibold">
-              {course.availableSeats} مقعد متاح
+          {/* Category Badge */}
+          <div className="flex items-center gap-2 sm:gap-3 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+            <div className="w-6 sm:w-10 h-px bg-cu-gold shrink-0" />
+            <span className="text-cu-gold text-[10px] sm:text-xs font-black tracking-[0.25em] sm:tracking-[0.3em] uppercase truncate">
+              {course.category?.name === "البرامج المعتمدة من الجامعة" ? "برامج التغذية" : course.category?.name || "برنامج رسمي"}
             </span>
           </div>
-        ) : (
-          <div className="flex items-center text-red-600 text-sm">
-            <svg
-              className="w-4 h-4 ml-2"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path
-                fillRule="evenodd"
-                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                clipRule="evenodd"
-              />
-            </svg>
-            <span className="font-semibold">مكتمل العدد</span>
-          </div>
-        )}
-        {/* <div className="text-sm text-gray-500">
-          {course.duration == 1
-            ? "شهر"
-            : course.duration == 2
-            ? "شهرين"
-            : course.duration > 2 && course.duration < 11
-            ? `${course.duration} شهور`
-            : `${course.duration >= 10 ? "أشهر" : "شهر"} `}
-        </div> */}
-      </div>
 
-      {/* static  */}
-      {/* description */}
-      <p className="text-gray-600 mb-4 leading-relaxed arabic-text">
-        {course.description || "برنامج تدريبي متخصص مع شهادة معتمدة من الجامعة"}
-      </p>
-
-      {/* Content Summary */}
-      {/* <div className="mb-6">
-        <h4 className="text-sm font-semibold text-gray-800 mb-2 flex items-center">
-          <svg
-            className="w-4 h-4 text-indigo-600 ml-2"
-            fill="currentColor"
-            viewBox="0 0 20 20"
+          {/* Title */}
+          <h3 className={`text-xl sm:text-2xl md:text-3xl font-bold text-white leading-[1.2] transition-colors duration-500
+            ${isSelected ? "text-cu-gold" : "group-hover:text-cu-gold"}`}
           >
-            <path
-              fillRule="evenodd"
-              d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z"
-              clipRule="evenodd"
-            />
-          </svg>
-          ملخص المحتوى
-        </h4>
-        <p className="text-sm text-gray-600 leading-relaxed arabic-text">
-          {course.summary ||
-            "للحصول على تفاصيل المحتوى الكاملة، يرجى التسجيل في البرنامج أو التواصل معنا للاستفسار عن المنهج التفصيلي والمحاضرات."}
-        </p>
-      </div> */}
+            {course.title}
+          </h3>
 
-      {/* static  */}
-      {/* Course Features */}
-      <div className="space-y-3 mb-4">
-        <h4 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-          <svg
-            className="w-4 h-4 text-indigo-600 me-2"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path
-              fillRule="evenodd"
-              d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z"
-              clipRule="evenodd"
-            />
-          </svg>
-          مميزات البرنامج
-        </h4>
-        {course.features &&
-          Array.isArray(course.features) &&
-          course.features.map((feature, index) => (
-            <div
-              className="flex items-center text-sm text-gray-600"
-              key={index}
-            >
-              <div className="flex items-center justify-center">
-                <svg
-                  className="w-4 h-4 text-green-500 ml-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clipRule="evenodd"
-                  />
+          {/* Description — visible at low opacity always, full on hover */}
+          <p className="text-slate-300 text-sm sm:text-base leading-relaxed line-clamp-2 arabic-text-premium font-medium opacity-50 group-hover:opacity-100 transition-opacity duration-500">
+            {course.description}
+          </p>
+
+          {/* Meta row: duration + seats */}
+          <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
+            {course.duration > 0 && (
+              <span className="flex items-center gap-1.5 text-[11px] sm:text-xs text-white/50 font-bold">
+                <svg className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-              </div>
-              <div className="flex items-center justify-center">
-                {typeof feature === "string"
-                  ? feature
-                  : (feature as { name?: string; title?: string })?.name ||
-                    (feature as { name?: string; title?: string })?.title}
-                {(!course.features ||
-                  !Array.isArray(course.features) ||
-                  course.features.length === 0) &&
-                  " شهادة معتمدة من الجامعة"}
-              </div>
-            </div>
-          ))}
-        <div className="flex items-center text-sm text-gray-600">
-          <svg
-            className="w-4 h-4 text-indigo-600 me-2"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path d="M10 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm.25-4.5a.75.75 0 01-1.5 0c0-2.5 3.5-2.25 3.5-5.25 0-1.38-1.12-2.5-2.5-2.5s-2.5 1.12-2.5 2.5a.75.75 0 01-1.5 0c0-2.21 1.79-4 4-4s4 1.79 4 4c0 3.25-3.5 3.5-3.5 5.25z" />
-          </svg>
-          للمزيد من التفاصيل سجل الآن{" "}
-        </div>
-      </div>
+                {course.duration} ساعة
+              </span>
+            )}
+            {course.availableSeats > 10 && (
+              <span className="flex items-center gap-1.5 text-[11px] sm:text-xs text-white/50 font-bold">
+                <svg className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                {course.availableSeats} مقعد
+              </span>
+            )}
+          </div>
 
-      {/* static  */}
-      {/* Action Buttons */}
-      <div className="space-y-3">
-        {course.availableSeats > 0 ? (
-          <button
-            onClick={() => onCourseSelect(course.title)}
-            className={`w-full py-3 px-6 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 ${
-              selectedCourse === course.title
-                ? "bg-gradient-to-r from-green-600 to-emerald-600 text-white"
-                : "bg-gradient-to-r from-indigo-600 to-blue-600 text-white hover:from-indigo-700 hover:to-blue-700"
-            }`}
-          >
-            {selectedCourse === course.title
-              ? "✓ تم اختيار هذا البرنامج"
-              : "سجل الآن"}
-          </button>
-        ) : (
-          <button
-            disabled
-            className="w-full py-3 px-6 rounded-xl font-semibold bg-gray-300 text-gray-500 cursor-not-allowed"
-          >
-            مكتمل العدد
-          </button>
-        )}
+          {/* Footer row */}
+          <div className="flex items-center justify-between pt-4 sm:pt-5 border-t border-white/10">
+            <div className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 bg-cu-green rounded-full shadow-[0_0_8px_#00a651]" />
+              <span className="text-[9px] sm:text-[10px] font-black text-white/40 tracking-widest uppercase">
+                الاعتماد الجامعي
+              </span>
+            </div>
+
+            {/* Arrow CTA */}
+            <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full border flex items-center justify-center transition-all duration-500 transform
+              ${isSelected
+                ? "border-cu-gold bg-cu-gold text-slate-950 rotate-45"
+                : "border-white/20 text-white group-hover:border-cu-gold group-hover:bg-cu-gold group-hover:text-slate-950 group-hover:rotate-45"
+              }`}
+            >
+              <svg className="-rotate-45 w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
