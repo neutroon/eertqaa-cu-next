@@ -1,0 +1,170 @@
+@import "tailwindcss";
+@import "react-phone-number-input/style.css";
+
+@theme {
+  /* Brand Colors - Directly from Logo */
+  --color-cu-red: #ee3124;
+  --color-cu-green: #00a651;
+  --color-cu-blue: #2e3192;
+  --color-cu-gold: #fff200;
+  
+  /* UI Colors - Refined for Cinematic Minimalism */
+  --color-background: #ffffff;
+  --color-foreground: #020617;
+  --color-slate-50: #f8fafc;
+  --color-slate-100: #f1f5f9;
+  --color-slate-200: #e2e8f0;
+  --color-slate-700: #334155;
+  --color-slate-800: #1e293b;
+  --color-slate-900: #0f172a;
+  --color-slate-950: #020617;
+
+  /* Premium Typography Mapping */
+  --font-sans: var(--font-outfit), var(--font-ibm-plex-arabic), var(--font-cairo), sans-serif;
+  --font-serif: var(--font-amiri), serif;
+  --font-mono: var(--font-inter), monospace;
+
+  --font-family-cairo: var(--font-cairo), "Cairo", sans-serif;
+  --font-family-amiri: var(--font-amiri), "Amiri", serif;
+  --font-family-outfit: var(--font-outfit), "Outfit", sans-serif;
+  --font-family-inter: var(--font-inter), "Inter", sans-serif;
+  --font-family-ibm-plex: var(--font-ibm-plex-arabic), "IBM Plex Sans Arabic", sans-serif;
+
+  /* Cinematic Animations */
+  --animate-stagger-in: staggerIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-float-slow: float 12s ease-in-out infinite;
+  --animate-pulse-subtle: pulseSubtle 4s ease-in-out infinite;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    height: -webkit-fill-available;
+  }
+  body {
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-family-ibm-plex);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-family-outfit);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--color-slate-950);
+  }
+}
+
+/* Spatial Glass System 3.0 (Cinematic Minimalism) */
+@utility glass-spatial {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(32px) saturate(190%);
+  -webkit-backdrop-filter: blur(32px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02),
+              0 20px 40px -20px rgba(0, 0, 0, 0.1),
+              inset 0 0 0 1px rgba(255, 255, 255, 0.3),
+              inset 0 1px 0 0 rgba(255, 255, 255, 0.5);
+}
+
+@utility glass-dark-spatial {
+  background: rgba(2, 6, 23, 0.8);
+  backdrop-filter: blur(40px) saturate(160%);
+  -webkit-backdrop-filter: blur(40px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.5),
+              inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+@utility section-padding {
+  @apply py-32 md:py-48;
+}
+
+@utility arabic-heading {
+  font-family: var(--font-family-amiri);
+  @apply font-bold leading-tight;
+}
+
+@utility arabic-text-premium {
+  font-family: var(--font-family-ibm-plex);
+  @apply leading-loose;
+  direction: rtl;
+}
+
+@layer components {
+  /* Minimalist Boutique Button */
+  .btn-boutique {
+    @apply relative overflow-hidden px-10 py-5 rounded-[2rem] font-black text-lg transition-all 
+           flex items-center justify-center gap-4 active:scale-95 border-2;
+    font-family: var(--font-family-outfit);
+  }
+
+  .btn-boutique-primary {
+    @apply bg-slate-950 text-white border-slate-950 hover:bg-slate-800 hover:border-slate-800 shadow-2xl shadow-slate-950/20;
+  }
+
+  .btn-boutique-glass {
+    @apply glass-spatial text-slate-950 border-white/80 hover:bg-white hover:border-cu-blue/20 hover:shadow-2xl hover:shadow-cu-blue/5;
+  }
+
+  .btn-boutique-red {
+    @apply bg-cu-red text-white border-cu-red hover:bg-red-700 hover:border-red-700 shadow-2xl shadow-cu-red/20;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { 
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes staggerIn {
+  from { 
+    opacity: 0;
+    transform: translateY(30px) scale(0.98);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0); }
+  33% { transform: translate(10px, -20px); }
+  66% { transform: translate(-10px, 10px); }
+}
+
+@keyframes pulseSubtle {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.1); }
+}
+
+/* Luxury Interactive Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-slate-200);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-cu-blue);
+}
