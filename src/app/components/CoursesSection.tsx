@@ -23,6 +23,7 @@ export default function CoursesSection({
     data: [],
   });
   const [loading, setLoading] = useState(false);
+  const safeCategories = Array.isArray(categories?.data) ? categories.data : [];
 
   useEffect(() => {
     const loadCategories = async () => {
@@ -103,7 +104,7 @@ export default function CoursesSection({
             </button>
 
             {!loading &&
-              [...categories.data]
+              [...safeCategories]
                 .filter(
                   (category: Category) => category.name !== "برامج التغذية",
                 )
