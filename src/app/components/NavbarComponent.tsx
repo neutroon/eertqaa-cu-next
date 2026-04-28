@@ -39,15 +39,17 @@ export default function Navbar() {
                     : "glass-spatial bg-white/10 border-white/20 shadow-[0_0_40px_rgba(255,242,0,0.15)] scale-110"
                 }`}
               />
-              <Image
-                src="/cu-logo.png"
-                alt="Cairo University Logo"
-                width={scrolled ? 50 : 75}
-                height={scrolled ? 50 : 75}
-                className={`object-contain transition-all duration-700 relative z-10 drop-shadow-2xl ${
-                  !scrolled ? "brightness-[1.05] saturate-[1.1]" : ""
-                }`}
-              />
+              <div className="rounded-full overflow-hidden">
+                <Image
+                  src="/cu-logo.jpeg"
+                  alt="Cairo University Logo"
+                  width={scrolled ? 50 : 75}
+                  height={scrolled ? 50 : 75}
+                  className={`object-contain transition-all duration-700 relative z-10 drop-shadow-2xl ${
+                    !scrolled ? "brightness-[1.05] saturate-[1.1]" : ""
+                  }`}
+                />
+              </div>
             </div>
 
             <div
