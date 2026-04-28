@@ -6,7 +6,7 @@ export default function Footer() {
   return (
     <footer className="bg-slate-950 text-white pt-32 pb-16 overflow-hidden relative">
       {/* Brand Aesthetic Accents */}
-      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cu-blue/30 to-transparent" />
+      <div className="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-cu-blue/30 to-transparent" />
       <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-cu-blue/5 rounded-full blur-[150px] translate-y-1/2 translate-x-1/2" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -14,16 +14,16 @@ export default function Footer() {
           {/* Brand Vision Column */}
           <div className="lg:col-span-12 xl:col-span-5">
             <div className="flex items-center gap-6 mb-10 group">
-              <div className="relative w-14 h-20 grayscale brightness-[3] transition-all group-hover:grayscale-0 group-hover:brightness-100">
+              <div className="relative w-14 h-20 grayscale transition-all group-hover:grayscale-0 group-hover:brightness-100">
                 <Image
-                  src="/cu-logo.png"
+                  src="/cu-logo.jpeg"
                   alt="جامعة"
                   fill
                   className="object-contain"
                 />
               </div>
               <div>
-                <h3 className="text-3xl font-black arabic-heading leading-tight tracking-tight">
+                <h3 className="text-3xl font-black text-white arabic-heading leading-tight tracking-tight">
                   منصة برامج تدريبية معتمدة
                 </h3>
                 <p className="text-xs uppercase tracking-[0.4em] font-black text-cu-gold mt-2">
