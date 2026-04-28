@@ -42,14 +42,21 @@ export default function CoursesSection({
   const filteredCourses =
     selectedCategory === "الكل"
       ? [...courses.data.courses].sort((a, b) => {
-        const priorityCategories = ["برامج التغذية", "البرامج المعتمدة من الجامعة"];
-        const aPriority = priorityCategories.includes(a.category?.name || "") ? 1 : 0;
-        const bPriority = priorityCategories.includes(b.category?.name || "") ? 1 : 0;
-        return bPriority - aPriority;
-      })
+          const priorityCategories = [
+            "برامج التغذية",
+            "البرامج المعتمدة من الجامعة",
+          ];
+          const aPriority = priorityCategories.includes(a.category?.name || "")
+            ? 1
+            : 0;
+          const bPriority = priorityCategories.includes(b.category?.name || "")
+            ? 1
+            : 0;
+          return bPriority - aPriority;
+        })
       : courses.data.courses.filter(
-        (course) => course.categoryId === selectedCategory
-      );
+          (course) => course.categoryId === selectedCategory,
+        );
 
   return (
     <section
@@ -62,7 +69,6 @@ export default function CoursesSection({
       <div className="absolute bottom-12 left-0 sm:left-12 w-48 h-48 sm:w-96 sm:h-96 bg-cu-blue/5 rounded-full blur-[80px] sm:blur-[100px]" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-
         {/* Section Header */}
         <div className="max-w-5xl mx-auto text-center mb-12 sm:mb-16 md:mb-20 lg:mb-28 flex flex-col items-center animate-fade-in-up">
           <div className="w-16 sm:w-24 h-px bg-cu-gold mb-6 sm:mb-10 shadow-[0_0_10px_rgba(255,242,0,0.5)]" />
@@ -73,8 +79,8 @@ export default function CoursesSection({
           </h2>
 
           <p className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl text-slate-600 font-medium arabic-text-premium max-w-xs sm:max-w-xl md:max-w-2xl lg:max-w-3xl border-r-4 border-cu-red pr-4 sm:pr-6 md:pr-10 text-right">
-            اكتشف برامجنا التعليمية التي تجمع بين عراقة جامعة القاهرة وأحدث
-            المنهجيات العالمية، مصممة خصيصاً لتشكيل قادة المستقبل.
+            اكتشف برامجنا التدريبية التي تجمع بين الخبرة العملية وأحدث المنهجيات
+            العالمية، مصممة خصيصاً لتأهيلك لسوق العمل وصناعة مستقبل مهني قوي.
           </p>
         </div>
 
@@ -84,10 +90,11 @@ export default function CoursesSection({
           <div className="flex lg:flex-wrap lg:justify-center gap-2 sm:gap-4 lg:gap-8 overflow-x-auto lg:overflow-visible pb-0 scrollbar-none snap-x snap-mandatory px-1">
             <button
               onClick={() => setSelectedCategory("الكل")}
-              className={`relative shrink-0 snap-start py-3 sm:py-4 px-3 sm:px-2 text-base sm:text-lg lg:text-xl font-bold transition-all whitespace-nowrap ${selectedCategory === "الكل"
-                ? "text-cu-blue"
-                : "text-slate-400 hover:text-slate-600"
-                }`}
+              className={`relative shrink-0 snap-start py-3 sm:py-4 px-3 sm:px-2 text-base sm:text-lg lg:text-xl font-bold transition-all whitespace-nowrap ${
+                selectedCategory === "الكل"
+                  ? "text-cu-blue"
+                  : "text-slate-400 hover:text-slate-600"
+              }`}
             >
               جميع البرامج
               {selectedCategory === "الكل" && (
@@ -97,7 +104,9 @@ export default function CoursesSection({
 
             {!loading &&
               [...categories.data]
-                .filter((category: Category) => category.name !== "برامج التغذية")
+                .filter(
+                  (category: Category) => category.name !== "برامج التغذية",
+                )
                 .sort((a, b) => {
                   const priorityNames = ["البرامج المعتمدة من الجامعة"];
                   const aIsPriority = priorityNames.includes(a.name);
@@ -110,12 +119,15 @@ export default function CoursesSection({
                   <button
                     key={category.id}
                     onClick={() => setSelectedCategory(category.id)}
-                    className={`relative shrink-0 snap-start py-3 sm:py-4 px-3 sm:px-2 text-base sm:text-lg lg:text-xl font-bold transition-all whitespace-nowrap ${selectedCategory === category.id
-                      ? "text-cu-blue"
-                      : "text-slate-400 hover:text-slate-600"
-                      }`}
+                    className={`relative shrink-0 snap-start py-3 sm:py-4 px-3 sm:px-2 text-base sm:text-lg lg:text-xl font-bold transition-all whitespace-nowrap ${
+                      selectedCategory === category.id
+                        ? "text-cu-blue"
+                        : "text-slate-400 hover:text-slate-600"
+                    }`}
                   >
-                    {category.name === "البرامج المعتمدة من الجامعة" ? "برامج التغذية" : category.name}
+                    {category.name === "البرامج المعتمدة من الجامعة"
+                      ? "برامج التغذية"
+                      : category.name}
                     {selectedCategory === category.id && (
                       <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-cu-blue rounded-t-full shadow-[0_-4px_10px_rgba(46,49,146,0.3)] animate-fadeIn" />
                     )}
@@ -136,15 +148,17 @@ export default function CoursesSection({
               />
             ))
           ) : filteredCourses.length > 0 ? (
-            filteredCourses.filter((course: Course) => course.availableSeats > 0).map((course: Course, index: number) => (
-              <CourseCard
-                key={course.id}
-                course={course}
-                index={index}
-                selectedCourse={selectedCourse}
-                onCourseSelect={onCourseSelect}
-              />
-            ))
+            filteredCourses
+              .filter((course: Course) => course.availableSeats > 0)
+              .map((course: Course, index: number) => (
+                <CourseCard
+                  key={course.id}
+                  course={course}
+                  index={index}
+                  selectedCourse={selectedCourse}
+                  onCourseSelect={onCourseSelect}
+                />
+              ))
           ) : (
             <div className="col-span-full text-center py-20 sm:py-32 md:py-48 bg-slate-50 rounded-2xl sm:rounded-[3rem] border-2 border-dashed border-slate-200">
               <p className="text-xl sm:text-2xl md:text-3xl text-slate-400 font-bold arabic-heading px-4">
