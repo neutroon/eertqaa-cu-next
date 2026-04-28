@@ -1,4 +1,11 @@
-import { Cairo, Amiri, Noto_Sans_Arabic, Outfit, Inter, IBM_Plex_Sans_Arabic } from "next/font/google";
+import {
+  Cairo,
+  Amiri,
+  Noto_Sans_Arabic,
+  Outfit,
+  Inter,
+  IBM_Plex_Sans_Arabic,
+} from "next/font/google";
 import "./global.css";
 import Script from "next/script";
 import MetaPixel from "@/app/components/MetaPixel";
@@ -46,9 +53,9 @@ const notoSansArabic = Noto_Sans_Arabic({
 });
 
 export const metadata: Metadata = {
-  title: "برامج جامعة القاهرة | Cairo University",
+  title: "برامج تدريبية معتمدة | شهادات موثقة",
   description:
-    "المنصة الرسمية لبرامج جامعة القاهرة التدريبية المعتمدة. احصل على شهادة موثقة ومختومة بختم النسر في تخصصات التغذية، الإدارة، وعلم النفس.",
+    "منصة متخصصة في تقديم برامج تدريبية معتمدة بشهادات موثقة ومختومة بختم النسر في مجالات التغذية، الإدارة، وعلم النفس، بإشراف نخبة من الخبراء.",
 };
 
 export default function RootLayout({
